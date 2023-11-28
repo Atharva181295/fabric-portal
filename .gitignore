@@ -6,3 +6,5 @@ __pycache__/
 env/
 venv/
 db.sqlite3
+static/webclient/node_modules
+static/webclient/.vscode
