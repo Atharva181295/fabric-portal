@@ -166,7 +166,7 @@ class UserDetail(generics.GenericAPIView):
         serializer = self.serializer_class(
             users, data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.validated_data['updatedAt'] = datetime.now()
+            serializer.validated_data['updated_at'] = datetime.now()
             serializer.save()
             return Response({"status": "success", "data": {"user": serializer.data}})
         return Response({"status": "fail", "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
