@@ -1,0 +1,32 @@
+[
+   {
+      "model":"users.User",
+      "pk": 1,
+      "fields":{
+         "last_login":"2023-11-28T13:11:26.119254+05:30",
+         "username":"admin",
+         "name":"Admin",
+         "email":"admin@gmail.com",
+         "password":"pbkdf2_sha256$600000$D2CpvypjoUfGE0H8SgJF3a$OIAa3Uqps0KP9rmIrRq9PFFaXatnLnht8Jf1Q2ebl5I=",
+         "is_active":true,
+         "is_admin":true,
+         "created_at":"2023-11-28T13:11:26.087871+05:30",
+         "updated_at":"2023-11-28T13:11:26.113522+05:30"
+      }
+   },
+  {
+      "model":"users.User",
+     "pk": 2,
+      "fields":{
+         "last_login":"2023-11-28T13:11:26.119254+05:30",
+         "username":"fabric",
+         "name":"Fabric",
+         "email":"fabric@gmail.com",
+         "password":"pbkdf2_sha256$600000$ZYEZ91pf6IeSFfMOdk5dHd$8o8FFdX89zI9tOVzX2Au16ZyQL/4KdK67Vw7ZB3V5lw=",
+         "is_active":true,
+         "is_admin":true,
+         "created_at":"2023-11-28T13:11:26.087871+05:30",
+         "updated_at":"2023-11-28T13:11:26.113522+05:30"
+      }
+   }
+]

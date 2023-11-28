@@ -79,4 +79,4 @@ class User(AbstractBaseUser):
         return self.is_admin
 
     class Meta:
-        db_table = "Users"
+        db_table = "users"

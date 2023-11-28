@@ -41,17 +41,31 @@ $ `source env/bin/activate`
 
 # Then simply apply the makemigrations:
 
-$ `python3 manage.py makemigrations`
+$ `python3 manage.py makemigrations users projects`
 
 
 # Then simply apply the migrations:
 
-$ `python3 manage.py migrate`
+(env)$ `python3 manage.py migrate`
+
+# You can Initialize Data :
+
+(env)$ `python manage.py loaddata users.json`
 
 # You can now run the development server:
 
 (env)$ `python3 manage.py runserver`
 
-# And navigate to http://127.0.0.1:8000/
+# And navigate to `http://127.0.0.1:8000/`
+
+
+# After Use below Login Credential
+
+# 1. `username:admin & password:admin`
+# 2. `username:fabric & password:fabric`
+
+# If need any time reset database means do below CMD
+
+ $  ` python manage.py reset_db`
 
 
