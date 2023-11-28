@@ -90,11 +90,11 @@ WSGI_APPLICATION = 'fabric_portal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'fabric_portal',
-        'USER': 'fabric',
-        'PASSWORD': 'ganesh123',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': 'fabric_portal', #Enter Your Database Name
+        'USER': 'fabric', #Enter Your Database User Name
+        'PASSWORD': 'ganesh123', #Enter Your Database Password
+        'HOST': 'localhost',  #Enter Your Database Host
+        'PORT': '5432',  #Enter Your Database Port
     }
 }
 # Password validation
