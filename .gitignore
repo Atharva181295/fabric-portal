@@ -6,5 +6,6 @@ __pycache__/
 env/
 venv/
 static/node_modules
+static/frontend
 .vscode
 db.sqlite3
