@@ -1,0 +1,38 @@
+mat-expansion-panel.login-panel {
+  min-width: 320px;
+  max-width: 400px;
+  margin: auto;
+  top: 100px;
+  position: relative;
+  border-radius: 8px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  overflow: hidden; 
+  transition: box-shadow 0.3s ease; 
+}
+
+mat-expansion-panel.login-panel:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+}
+
+.login-form {
+  padding: 16px; 
+}
+
+.field mat-form-field {
+  width: 100%;
+}
+
+.button {
+  text-align: right;
+  font-size: 12px !important;
+  color: #3f51b5;
+}
+
+.button button {
+  transition: background-color 0.3s ease; 
+}
+
+.button button:hover {
+  background-color: #303f9f;
+  color: #fff; 
+}

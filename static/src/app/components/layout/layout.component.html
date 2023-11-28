@@ -1,0 +1,37 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <div class="header-grid">
+        <div class="sub-header-grid">
+          <div>
+            <span class="header-title" (click)="gotoPage('dashboard')">
+              Fabric-Web</span>
+          </div>
+          <div style="text-align: right">
+            <button mat-button [matMenuTriggerFor]="menu" class="right-align">
+              <span>{{username}}</span>
+              <mat-icon>arrow_drop_down</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" aligns="end">
+              <button mat-menu-item (click)="gotoPage('my-account')">
+                <mat-icon>account_box</mat-icon>
+                <span>My Account</span>
+              </button>
+              <button mat-menu-item
+                      (click)="gotoPage('my-account/change-password')">
+                <mat-icon>remove_red_eye</mat-icon>
+                <span>Change Password</span>
+              </button>
+              <button mat-menu-item (click)="logout()">
+                <mat-icon>remove_circle</mat-icon>
+                <span>Logout</span>
+              </button>
+            </mat-menu>
+          </div>
+        </div>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
+  

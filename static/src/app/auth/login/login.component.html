@@ -1,0 +1,52 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Fabric-Web</span>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-expansion-panel class="login-panel" expanded="true" hideToggle="true" disabled="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Sign In
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <form [formGroup]="signInForm" (ngSubmit)="submit()" class="login-form">
+    <div class="field">
+      <mat-form-field>
+        <mat-label>User ID</mat-label>
+        <input matInput
+               type="text"
+               name="user_id"
+               formControlName="user_id"
+               placeholder="Enter user id"
+               required>
+      </mat-form-field>
+    </div>
+
+    <div class="field">
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput
+               appBlockCopyPaste
+               type="password"
+               name="password"
+               formControlName="password"
+               placeholder="Enter Password"
+               required>
+      </mat-form-field>
+    </div>
+
+    <div class="button">
+      <button type="submit"
+              [disabled]="!canSubmit()"
+              mat-raised-button
+              color="primary">
+              <span *ngIf="loading">
+                <mat-progress-spinner diameter="20" mode="indeterminate"></mat-progress-spinner>
+              </span>
+              <span *ngIf="!loading">Submit</span>
+      </button>
+    </div>
+  </form>
+</mat-expansion-panel>

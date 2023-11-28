@@ -1,0 +1,42 @@
+<div class="container">
+    <ng-container>
+      <a class="widget">
+        <mat-card>
+          <mat-card-content>
+            <button mat-menu-item (click)="gotoPage('projects')">
+              <mat-icon>build</mat-icon>
+              <span>Project</span>
+            </button>
+          </mat-card-content>
+        </mat-card>
+      </a>
+    </ng-container>
+
+    <ng-container>
+        <a class="widget">
+          <mat-card>
+            <mat-card-content>
+              <button mat-menu-item (click)="gotoPage('venues')">
+                <mat-icon>room</mat-icon>
+                <span>Venue</span>
+              </button>
+            </mat-card-content>
+          </mat-card>
+        </a>
+      </ng-container>
+
+      <ng-container>
+        <a class="widget">
+          <mat-card>
+            <mat-card-content>
+              <button mat-menu-item (click)="gotoPage('users')">
+                <mat-icon>supervised_user_circle</mat-icon>
+                <span>User</span>
+              </button>
+            </mat-card-content>
+          </mat-card>
+        </a>
+      </ng-container>
+  </div>
+  
+  

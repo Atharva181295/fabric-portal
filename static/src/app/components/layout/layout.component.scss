@@ -1,0 +1,22 @@
+.spacer {
+    flex: 1 auto;
+  }
+  
+  .container {
+    padding: 20px;
+  }
+  
+  .header-title {
+    cursor: pointer;
+  }
+  .header-grid{
+    display: grid;
+    width: 100%;
+    grid-template-columns: 2fr;
+    cursor: pointer;
+  }
+  .sub-header-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr
+  }
+  
