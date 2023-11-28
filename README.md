@@ -4,17 +4,17 @@
 
 # The first thing to do is to clone the repository:
 
-$ `git clone Project_URL`
+ `git clone Project_URL`
 
-$ `cd fabric_portal`
+ `cd fabric_portal`
 
 # Create a virtual environment:
 
-$ `python3 -m venv env`
+ `python3 -m venv env`
 
 # Activate environment
 
-$ `source env/bin/activate`
+ `source env/bin/activate`
 
 # Install project dependencies:
 
@@ -41,7 +41,7 @@ $ `source env/bin/activate`
 
 # Then simply apply the makemigrations:
 
-$ `python3 manage.py makemigrations users projects`
+(env)$ `python3 manage.py makemigrations users projects`
 
 
 # Then simply apply the migrations:
