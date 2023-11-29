@@ -15,7 +15,11 @@ export class AuthService {
 
   async login(username: string, password: string): Promise<boolean> {
     try {
-     this.isAuthenticatedFlag = true;
+      const dynamicLoginUrl = this.getUrl(this.loginUrl);
+
+      const response = await this.http.post<any>(dynamicLoginUrl, { username, password }).toPromise();
+
+      this.isAuthenticatedFlag = true;
 
       return true;
     } catch (error) {
