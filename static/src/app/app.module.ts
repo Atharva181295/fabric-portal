@@ -29,6 +29,7 @@ import { AssignRolesComponent } from './pages/users/assign-roles/assign-roles.co
 import { SetPasswordComponent } from './pages/users/set-password/set-password.component';
 import { AddProjectComponent } from './pages/projects/add-project/add-project.component';
 import { AddVenueComponent } from './pages/venues/add-venue/add-venue.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { AddVenueComponent } from './pages/venues/add-venue/add-venue.component'
     AppRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     FormsModule,
     MatToolbarModule,
     MatExpansionModule,
