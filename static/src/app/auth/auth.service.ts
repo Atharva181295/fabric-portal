@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {CookieService} from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
@@ -8,11 +9,11 @@ export class AuthService {
   private baseUrl = 'http://localhost:8000/';
   private loginUrl = 'api/login/';
   private logoutUrl = 'api/logout/';
-  private tokenCookieName = 'authToken';
+  private tokenCookieName = 'isAuthenticated';
 
   private isAuthenticatedFlag: boolean = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private cookieService: CookieService, private http: HttpClient){}
 
   async login(username: string, password: string): Promise<boolean> {
     try {
@@ -20,9 +21,9 @@ export class AuthService {
 
       const response = await this.http.post<any>(dynamicLoginUrl, { username, password }).toPromise();
 
-      this.isAuthenticatedFlag = true;
+      this.cookieService.set(this.tokenCookieName, "true");
 
-      this.setCookie(this.tokenCookieName, response.token);
+      this.isAuthenticatedFlag = true;
 
       return true;
     } catch (error) {
@@ -35,7 +36,7 @@ export class AuthService {
     try {
       this.isAuthenticatedFlag = false;
 
-      this.removeCookie(this.tokenCookieName);
+      this.cookieService.delete(this.tokenCookieName);
 
       const response = await this.http.post<any>(this.getUrl(this.logoutUrl), {}).toPromise();
 
@@ -48,11 +49,9 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     // Check if the token exists in the cookie
-    return this.getCookie(this.tokenCookieName) !== null;
-  }
-
-  getToken(): string | null {
-    return this.getCookie(this.tokenCookieName);
+    console.log("isAuthenticated", this.cookieService.get('isAuthenticated'))
+    return this.cookieService.get('isAuthenticated') == "true" ;
+    
   }
 
   private getUrl(endpoint: string): string {

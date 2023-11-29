@@ -33,6 +33,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LoaderComponent } from './utils/loader/loader.component';
 import { HttpRequestInterceptor } from './http-request-interceptor';
 import { LoaderService } from './utils/loader/loader.service';
+import {CookieService} from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -75,8 +76,9 @@ import { LoaderService } from './utils/loader/loader.service';
     LoaderService, {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpRequestInterceptor,
-      multi: true
-    }],
+      multi: true,
+    },
+    CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
