@@ -1,28 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from './../../auth/auth.service'; // Update the path
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss']
 })
-export class LayoutComponent implements OnInit{
+export class LayoutComponent implements OnInit {
 
-  username: string = 'admin'
+  username: string = 'admin';
 
-  constructor(private router: Router) {
-  }
+  constructor(private router: Router, private authService: AuthService) {}
 
-  ngOnInit(): void {
-    
-  }
+  ngOnInit(): void {}
 
   async logout(): Promise<void> {
-    this.gotoPage('login');
+    const logoutSuccess = await this.authService.logout();
+    if (logoutSuccess) {
+      this.gotoPage('login');
+    } else {
+      console.error('Logout failed');
+    }
   }
 
   gotoPage(pageName: string): void {
     this.router.navigate([pageName]);
   }
-
 }

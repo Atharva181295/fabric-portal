@@ -1,6 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -11,27 +12,40 @@ export class LoginComponent {
   loading = false;
 
   signInForm = new FormGroup({
-    user_id: new FormControl('', [Validators.required]),
+    username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
   });
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   canSubmit(): boolean {
     return this.signInForm.valid;
   }
 
   async submit(): Promise<void> {
+    if (!this.canSubmit()) {
+      return;
+    }
+  
     this.loading = true;
-    setTimeout(() => {
+  
+    try {
+      const username = this.signInForm.get('username')?.value || ''; 
+      const password = this.signInForm.get('password')?.value || '';  
+  
+      const loginSuccess = await this.authService.login(username, password);
+  
+      if (loginSuccess) {
+        this.gotoPage('dashboard');
+      } else {
+        console.error('Login failed');
+      }
+    } finally {
       this.loading = false;
-      // Add the logic to handle the API response
-      console.log('API call complete');
-      const fcUserId = this.signInForm.get('user_id');
-      const fcPasswd = this.signInForm.get('password');
-      this.gotoPage('dashboard');
-    }, 2000);
+    }
   }
+  
+  
 
   gotoPage(pageName: string): void {
     this.router.navigate([pageName]);

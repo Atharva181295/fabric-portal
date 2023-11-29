@@ -9,15 +9,17 @@ import { ProjectsComponent } from './pages/projects/projects.component';
 import { AddProjectComponent } from './pages/projects/add-project/add-project.component';
 import { AddVenueComponent } from './pages/venues/add-venue/add-venue.component';
 import { AddUserComponent } from './pages/users/add-user/add-user.component';
+import { AuthGuard } from './auth/auth.guard'; 
 
 const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: '',
     component: LayoutComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'dashboard',
@@ -51,12 +53,12 @@ const routes: Routes = [
         path: 'projects/add',
         component: AddProjectComponent,
       },
-    ]
+    ],
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

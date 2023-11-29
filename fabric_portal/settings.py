@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -92,8 +93,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'fabric_portal', #Enter Your Database Name
-        'USER': 'fabric', #Enter Your Database User Name
-        'PASSWORD': 'ganesh123', #Enter Your Database Password
+        'USER': 'postgres', #Enter Your Database User Name
+        'PASSWORD': 'postgres', #Enter Your Database Password
         'HOST': 'localhost',  #Enter Your Database Host
         'PORT': '5432',  #Enter Your Database Port
     }
@@ -162,5 +163,23 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = False
+# SESSION_COOKIE_SECURE = False
+
+# CSRF_COOKIE_SAMESITE = 'Strict'
+# SESSION_COOKIE_SAMESITE = 'Strict'
+# CSRF_COOKIE_HTTPONLY = False  # False since we will grab it via universal-cookies
+# SESSION_COOKIE_HTTPONLY = True
+
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_HTTPONLY = True
+CSRF_TRUSTED_ORIGINS = ['http://localhost:4200']
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:4200',
+    'http://127.0.0.1:4200',
+]
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
+CORS_ALLOW_CREDENTIALS = True
