@@ -93,8 +93,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'fabric_portal', #Enter Your Database Name
-        'USER': 'postgres', #Enter Your Database User Name
-        'PASSWORD': 'postgres', #Enter Your Database Password
+        'USER': 'fabric', #Enter Your Database User Name
+        'PASSWORD': 'fabric', #Enter Your Database Password
         'HOST': 'localhost',  #Enter Your Database Host
         'PORT': '5432',  #Enter Your Database Port
     }

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -29,8 +29,14 @@ import { AssignRolesComponent } from './pages/users/assign-roles/assign-roles.co
 import { SetPasswordComponent } from './pages/users/set-password/set-password.component';
 import { AddProjectComponent } from './pages/projects/add-project/add-project.component';
 import { AddVenueComponent } from './pages/venues/add-venue/add-venue.component';
-import { HttpClientModule } from '@angular/common/http';
-
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { LoaderComponent } from './utils/loader/loader.component';
+import { HttpRequestInterceptor } from './http-request-interceptor';
+import { LoaderService } from './utils/loader/loader.service';
+import { AuthService } from './auth/auth.service';
+export function initializeAppFactory(authService: AuthService) {
+  return () => authService.whoami();
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,6 +51,7 @@ import { HttpClientModule } from '@angular/common/http';
     SetPasswordComponent,
     AddProjectComponent,
     AddVenueComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -65,8 +72,19 @@ import { HttpClientModule } from '@angular/common/http';
     MatDialogModule,
     MatInputModule,
     MatCheckboxModule,
+    MatProgressSpinnerModule
   ],
-  providers: [],
+  providers: [
+    LoaderService,
+    {
+      provide: APP_INITIALIZER, useFactory: initializeAppFactory,
+      deps: [AuthService], multi: true
+    }, {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpRequestInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
