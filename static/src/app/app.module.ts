@@ -29,7 +29,10 @@ import { AssignRolesComponent } from './pages/users/assign-roles/assign-roles.co
 import { SetPasswordComponent } from './pages/users/set-password/set-password.component';
 import { AddProjectComponent } from './pages/projects/add-project/add-project.component';
 import { AddVenueComponent } from './pages/venues/add-venue/add-venue.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { LoaderComponent } from './utils/loader/loader.component';
+import { HttpRequestInterceptor } from './http-request-interceptor';
+import { LoaderService } from './utils/loader/loader.service';
 
 @NgModule({
   declarations: [
@@ -45,6 +48,7 @@ import { HttpClientModule } from '@angular/common/http';
     SetPasswordComponent,
     AddProjectComponent,
     AddVenueComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +71,12 @@ import { HttpClientModule } from '@angular/common/http';
     MatCheckboxModule,
     MatProgressSpinnerModule
   ],
-  providers: [],
+  providers: [
+    LoaderService, {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpRequestInterceptor,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
