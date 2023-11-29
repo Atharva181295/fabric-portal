@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -33,8 +33,10 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LoaderComponent } from './utils/loader/loader.component';
 import { HttpRequestInterceptor } from './http-request-interceptor';
 import { LoaderService } from './utils/loader/loader.service';
-import {CookieService} from 'ngx-cookie-service';
-
+import { AuthService } from './auth/auth.service';
+export function initializeAppFactory(authService: AuthService) {
+  return () => authService.whoami();
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -73,12 +75,16 @@ import {CookieService} from 'ngx-cookie-service';
     MatProgressSpinnerModule
   ],
   providers: [
-    LoaderService, {
+    LoaderService,
+    {
+      provide: APP_INITIALIZER, useFactory: initializeAppFactory,
+      deps: [AuthService], multi: true
+    }, {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpRequestInterceptor,
       multi: true,
     },
-    CookieService],
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

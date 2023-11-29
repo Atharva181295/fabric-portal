@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {CookieService} from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,20 +8,17 @@ export class AuthService {
   private baseUrl = 'http://localhost:8000/';
   private loginUrl = 'api/login/';
   private logoutUrl = 'api/logout/';
-  private tokenCookieName = 'isAuthenticated';
+  private checAuth = 'api/checkauth/';
 
   private isAuthenticatedFlag: boolean = false;
 
-  constructor(private cookieService: CookieService, private http: HttpClient){}
+  constructor(private http: HttpClient) { }
 
   async login(username: string, password: string): Promise<boolean> {
     try {
       const dynamicLoginUrl = this.getUrl(this.loginUrl);
 
       const response = await this.http.post<any>(dynamicLoginUrl, { username, password }).toPromise();
-
-      this.cookieService.set(this.tokenCookieName, "true");
-
       this.isAuthenticatedFlag = true;
 
       return true;
@@ -36,9 +32,7 @@ export class AuthService {
     try {
       this.isAuthenticatedFlag = false;
 
-      this.cookieService.delete(this.tokenCookieName);
-
-      const response = await this.http.post<any>(this.getUrl(this.logoutUrl), {}).toPromise();
+     await this.http.post<any>(this.getUrl(this.logoutUrl), {}).toPromise();
 
       return true;
     } catch (error) {
@@ -48,10 +42,17 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    // Check if the token exists in the cookie
-    console.log("isAuthenticated", this.cookieService.get('isAuthenticated'))
-    return this.cookieService.get('isAuthenticated') == "true" ;
-    
+    return this.isAuthenticatedFlag;
+  }
+
+  async whoami(): Promise<any> {
+    return await this.http.get<any>(`${this.baseUrl}${this.checAuth}`)
+      .toPromise()
+      .then(response => {
+        console.log(response)
+        this.isAuthenticatedFlag = response.is_authenticated
+        return true;
+      }).catch((error) => console.log(error));
   }
 
   private getUrl(endpoint: string): string {

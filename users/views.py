@@ -32,10 +32,8 @@ class CheckAuthenticatedView(APIView):
     authentication_classes = (CsrfExemptSessionAuthentication, SessionAuthentication)
 
     def get(self, request):
-        if request.user.is_authenticated:
-            return JsonResponse({'User isAuthenticated': True})
-        else:
-            return JsonResponse({'User isAuthenticated': False})
+        print(request.user.is_authenticated)
+        return JsonResponse({'is_authenticated': request.user.is_authenticated})
 
 
 class RegisterView(generics.CreateAPIView):
