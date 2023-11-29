@@ -8,6 +8,7 @@ export class AuthService {
   private baseUrl = 'http://localhost:8000/';
   private loginUrl = 'api/login/';
   private logoutUrl = 'api/logout/';
+  private tokenCookieName = 'authToken';
 
   private isAuthenticatedFlag: boolean = false;
 
@@ -21,6 +22,8 @@ export class AuthService {
 
       this.isAuthenticatedFlag = true;
 
+      this.setCookie(this.tokenCookieName, response.token);
+
       return true;
     } catch (error) {
       console.error('Error during login:', error);
@@ -32,7 +35,10 @@ export class AuthService {
     try {
       this.isAuthenticatedFlag = false;
 
+      this.removeCookie(this.tokenCookieName);
+
       const response = await this.http.post<any>(this.getUrl(this.logoutUrl), {}).toPromise();
+
       return true;
     } catch (error) {
       console.error('Error during logout:', error);
@@ -41,10 +47,30 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return this.isAuthenticatedFlag;
+    // Check if the token exists in the cookie
+    return this.getCookie(this.tokenCookieName) !== null;
+  }
+
+  getToken(): string | null {
+    return this.getCookie(this.tokenCookieName);
   }
 
   private getUrl(endpoint: string): string {
     return this.baseUrl + endpoint;
+  }
+
+  private setCookie(name: string, value: string): void {
+    document.cookie = `${name}=${value}; path=/`;
+  }
+
+  private getCookie(name: string): string | null {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
+    return null;
+  }
+
+  private removeCookie(name: string): void {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
   }
 }

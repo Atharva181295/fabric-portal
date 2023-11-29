@@ -65,6 +65,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatDialogModule,
     MatInputModule,
     MatCheckboxModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
