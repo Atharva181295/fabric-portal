@@ -21,7 +21,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AddUserComponent } from './pages/users/add-user/add-user.component';
@@ -34,6 +36,8 @@ import { LoaderComponent } from './utils/loader/loader.component';
 import { HttpRequestInterceptor } from './http-request-interceptor';
 import { LoaderService } from './utils/loader/loader.service';
 import { AuthService } from './auth/auth.service';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { EditUserDialogComponent } from './components/edit-user-dialog/edit-user-dialog.component';
 export function initializeAppFactory(authService: AuthService) {
   return () => authService.whoami();
 }
@@ -51,7 +55,8 @@ export function initializeAppFactory(authService: AuthService) {
     SetPasswordComponent,
     AddProjectComponent,
     AddVenueComponent,
-    LoaderComponent
+    LoaderComponent,
+    EditUserDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -72,7 +77,10 @@ export function initializeAppFactory(authService: AuthService) {
     MatDialogModule,
     MatInputModule,
     MatCheckboxModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTableModule,
+    MatDividerModule,
+    MatPaginatorModule,
   ],
   providers: [
     LoaderService,
