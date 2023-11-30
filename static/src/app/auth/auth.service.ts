@@ -10,6 +10,7 @@ export class AuthService {
   private logoutUrl = 'api/logout/';
   private checAuth = 'api/checkauth/';
 
+
   private isAuthenticatedFlag: boolean = false;
 
   constructor(private http: HttpClient) { }
@@ -50,7 +51,7 @@ export class AuthService {
       .toPromise()
       .then(response => {
         console.log(response)
-        this.isAuthenticatedFlag = response.is_authenticated
+        this.isAuthenticatedFlag = response.is_authenticated;
         return true;
       }).catch((error) => console.log(error));
   }

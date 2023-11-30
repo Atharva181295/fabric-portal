@@ -34,5 +34,5 @@ export class UsersService {
     const apiUrl = `${this.usersApiUrl}/${userId}`;
     return this.http.put(apiUrl, userData);
   }
-
+  
 }

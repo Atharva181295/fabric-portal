@@ -1,1 +1,89 @@
-<p>add-project works!</p>
+<div class="page-container">
+    <div class="card-container">
+      <mat-card class="card">
+        <mat-card-title>Add Project</mat-card-title>
+        <mat-divider></mat-divider>
+        <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+          <!-- Name -->
+          <mat-form-field appearance="fill">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" required />
+            <mat-error
+              *ngIf="
+                projectForm.get('name')?.hasError('required') &&
+                projectForm.get('name')?.touched
+              "
+            >
+              Name is required
+            </mat-error>
+          </mat-form-field>
+  
+          <!-- Code -->
+          <mat-form-field appearance="fill">
+            <mat-label>Code</mat-label>
+            <input matInput formControlName="code" required />
+            <mat-error
+              *ngIf="
+                projectForm.get('code')?.hasError('required') &&
+                projectForm.get('code')?.touched
+              "
+            >
+              Code is required
+            </mat-error>
+          </mat-form-field>
+  
+          <!-- Start Date -->
+          <mat-form-field appearance="fill">
+            <mat-label>Start Date</mat-label>
+            <input matInput [matDatepicker]="startDatePicker" formControlName="start_date" required />
+            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #startDatePicker></mat-datepicker>
+            <mat-error
+              *ngIf="
+                projectForm.get('start_date')?.hasError('required') &&
+                projectForm.get('start_date')?.touched
+              "
+            >
+              Start Date is required
+            </mat-error>
+          </mat-form-field>
+  
+          <!-- End Date -->
+          <mat-form-field appearance="fill">
+            <mat-label>End Date</mat-label>
+            <input matInput [matDatepicker]="endDatePicker" formControlName="end_date" required />
+            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #endDatePicker></mat-datepicker>
+            <mat-error
+              *ngIf="
+                projectForm.get('end_date')?.hasError('required') &&
+                projectForm.get('end_date')?.touched
+              "
+            >
+              End Date is required
+            </mat-error>
+          </mat-form-field>
+  
+          <!-- Description -->
+          <mat-form-field appearance="fill">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" required></textarea>
+            <mat-error
+              *ngIf="
+                projectForm.get('description')?.hasError('required') &&
+                projectForm.get('description')?.touched
+              "
+            >
+              Description is required
+            </mat-error>
+          </mat-form-field>
+  
+          <!-- Submit Button -->
+          <div class="button-container">
+            <button mat-flat-button type="submit" color="primary">Add Project</button>
+          </div>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+  

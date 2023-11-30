@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from './../../auth/auth.service'; // Update the path
+import { AuthService } from './../../auth/auth.service';
 
 @Component({
   selector: 'app-layout',
@@ -8,12 +8,12 @@ import { AuthService } from './../../auth/auth.service'; // Update the path
   styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent implements OnInit {
-
   username: string = 'admin';
 
   constructor(private router: Router, private authService: AuthService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  } 
 
   async logout(): Promise<void> {
     const logoutSuccess = await this.authService.logout();

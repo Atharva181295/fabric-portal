@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UsersService } from '../../pages/users/users.service';
 
 @Component({
   selector: 'app-edit-user-dialog',
@@ -12,6 +13,7 @@ export class EditUserDialogComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private userService: UsersService,
     public dialogRef: MatDialogRef<EditUserDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
@@ -22,12 +24,26 @@ export class EditUserDialogComponent implements OnInit {
       email: [this.data.email, [Validators.required, Validators.email]],
       name: [this.data.name, Validators.required],
       // Add other fields as needed
+      
     });
   }
 
   onSaveClick(): void {
     if (this.editForm.valid) {
-      this.dialogRef.close(this.editForm.value);
+      const userData = this.editForm.value;
+
+      // Assuming you have a user ID in the data object
+      const userId = this.data.userId;
+
+      this.userService.updateUser(userId, userData).subscribe(
+        (response) => {
+          console.log('User updated successfully', response);
+          this.dialogRef.close(response); // You can pass data back to the calling component if needed
+        },
+        (error) => {
+          console.error('Error updating user', error);
+        }
+      );
     }
   }
 

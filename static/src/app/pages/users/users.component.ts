@@ -52,13 +52,14 @@ export class UsersComponent implements AfterViewInit {
   }
 
   editUser(user: any): void {
+    console.log(user.id)
     // Fetch user details by ID
     this.userService.getUserById(user.id).subscribe(
       (userDetails) => {
         // Open the dialog and pass user details as data
         const dialogRef = this.dialog.open(EditUserDialogComponent, {
           width: '350px',
-          data: { user: userDetails }
+          data: { user: userDetails, userId: user.id }
         });
 
         // Subscribe to dialog close event

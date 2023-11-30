@@ -26,7 +26,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { AddUserComponent } from './pages/users/add-user/add-user.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AssignRolesComponent } from './pages/users/assign-roles/assign-roles.component';
 import { SetPasswordComponent } from './pages/users/set-password/set-password.component';
 import { AddProjectComponent } from './pages/projects/add-project/add-project.component';
@@ -38,6 +38,9 @@ import { LoaderService } from './utils/loader/loader.service';
 import { AuthService } from './auth/auth.service';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { EditUserDialogComponent } from './components/edit-user-dialog/edit-user-dialog.component';
+import { MatNativeDateModule } from '@angular/material/core';
+import { EditProjectDialogComponent } from './components/edit-project-dialog/edit-project-dialog.component';
+import { AddUserComponent } from './pages/users/add-user/add-user.component';
 export function initializeAppFactory(authService: AuthService) {
   return () => authService.whoami();
 }
@@ -51,12 +54,14 @@ export function initializeAppFactory(authService: AuthService) {
     LayoutComponent,
     UsersComponent,
     AddUserComponent,
+    AddProjectComponent,
     AssignRolesComponent,
     SetPasswordComponent,
     AddProjectComponent,
     AddVenueComponent,
     LoaderComponent,
-    EditUserDialogComponent
+    EditUserDialogComponent,
+    EditProjectDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -81,6 +86,8 @@ export function initializeAppFactory(authService: AuthService) {
     MatTableModule,
     MatDividerModule,
     MatPaginatorModule,
+    MatNativeDateModule,
+    MatDatepickerModule
   ],
   providers: [
     LoaderService,
