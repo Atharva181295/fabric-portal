@@ -21,16 +21,14 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.urls import path, include
 from django.shortcuts import render
-def index_view(request):
-    return render(request, 'index.html')
+# def index_view(request):
+    # return render(request, 'index.html')
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('users.urls')),
     path('api/projects/', include('projects.urls')),
-    path('', index_view, name='index'),
-
-                  # path('', views.index, name='index')
-              ] + static(settings.STATIC_URL,document_root=settings.STATICFILES_DIRS)
+    # path('', index_view, name='index'),
+    path('', views.index, name='index')] + static(settings.STATIC_URL,document_root=settings.STATICFILES_DIRS)
 

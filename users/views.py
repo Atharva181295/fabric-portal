@@ -55,13 +55,14 @@ class LoginView(APIView):
         data = json.loads(request.body)
         username = data.get('username')
         password = data.get('password')
-
+        csrf_token = request.META.get('CSRF_TOKEN')
+        print(request.COOKIES)
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
             if user.is_active:
                 login(request, user)
-                return JsonResponse({'detail': 'Logged in successfully.'}, status=status.HTTP_200_OK)
+                return JsonResponse({'detail': 'Logged in successfully.','Cookies':request.COOKIES}, status=status.HTTP_200_OK)
         else:
             return JsonResponse({'detail': 'User Name or Password is incorrect.'}, status=status.HTTP_400_BAD_REQUEST)
 
