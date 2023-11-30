@@ -43,8 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'rest_framework.authtoken',
-    'django_extensions',
-
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
@@ -63,7 +62,7 @@ ROOT_URLCONF = 'fabric_portal.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'static/frontend/browser'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,17 +87,19 @@ WSGI_APPLICATION = 'fabric_portal.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-
+import os
+from decouple import config
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'fabric_portal', #Enter Your Database Name
-        'USER': 'fabric', #Enter Your Database User Name
-        'PASSWORD': 'fabric', #Enter Your Database Password
-        'HOST': 'localhost',  #Enter Your Database Host
-        'PORT': '5432',  #Enter Your Database Port
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASS'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
     }
 }
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -146,15 +147,13 @@ USE_L10N = True
 USE_TZ = True
 
 AUTH_USER_MODEL = "users.User"
-#sionid Expire default is 1209600 sec = 14 days
-SESSION_COOKIE_AGE = 1800   # 30 Min
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
 
-static = os.path.join(BASE_DIR, 'static/frontend/browser/')
+static = os.path.join(BASE_DIR, 'static/frontend/browser')
 
 STATICFILES_DIRS = [
     os.path.join(static),
@@ -163,6 +162,10 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Default settings for  single URL
+
 # CSRF_COOKIE_SECURE = False
 # SESSION_COOKIE_SECURE = False
 
@@ -171,15 +174,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CSRF_COOKIE_HTTPONLY = False  # False since we will grab it via universal-cookies
 # SESSION_COOKIE_HTTPONLY = True
 
+
+# Default settings for  two domains URL runing same time
+
 CSRF_COOKIE_SAMESITE = 'Lax'
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_HTTPONLY = True
 SESSION_COOKIE_HTTPONLY = True
-CSRF_TRUSTED_ORIGINS = ['http://localhost:4200']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:4200','http://127.0.0.1:4200','http://localhost:8000','http://127.0.0.1:8000']
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200',
     'http://127.0.0.1:4200',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000'
 ]
 CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
 CORS_ALLOW_CREDENTIALS = True
+
+#sionid Expire default is 1209600 sec = 14 days
+
+SESSION_COOKIE_AGE = 1800   # 30 Min
