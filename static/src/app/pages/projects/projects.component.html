@@ -1,17 +1,68 @@
-<mat-expansion-panel [disabled]="true" [expanded]="true">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <b class="panel-title">Projects</b>
-      </mat-panel-title>
-        <div class="">
-            <button mat-raised-button style="box-shadow: none"
-                    (click)="gotoPage('projects/add')">
-            <mat-icon>add</mat-icon>
-            Add
+<div class="container-fluid">
+  <div class="flex align-right">
+      <h3 class="title">Project List</h3>
+      <mat-form-field>
+          <mat-label>Search</mat-label>
+          <input matInput (input)="applyFilter($event)" />
+        </mat-form-field>
+    <button mat-raised-button color="primary" class="primary-button" routerLink="/projects/add">
+      Add Project
+    </button>
+  </div>
+  <div class="mat-elevation-z8">  
+    <div class="users-table">
+      <table mat-table [dataSource]="dataSource" matSort>
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+          <td mat-cell *matCellDef="let project">{{ project.id }}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let project">{{ project.name }}</td>
+        </ng-container>
+
+        <!-- Username Column -->
+        <ng-container matColumnDef="code">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Project Code</th>
+          <td mat-cell *matCellDef="let project">{{ project.code }}</td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="start_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Start Date</th>
+          <td mat-cell *matCellDef="let project">{{ project.start_date }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="end_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>End Date</th>
+          <td mat-cell *matCellDef="let project">{{ project.end_date }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+          <td mat-cell *matCellDef="let project">{{ project.description }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let project">
+            <button mat-icon-button class="edit-btn" (click)="editProject(project)">
+              <mat-icon>edit</mat-icon>
             </button>
-        </div>
-    </mat-expansion-panel-header>
-  </mat-expansion-panel>
-  
-  
-  
+            <button mat-icon-button class="delete-btn" (click)="deleteProject(project)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['id', 'name', 'code', 'start_date','end_date','description', 'actions']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['id', 'name', 'code','start_date','end_date','description', 'actions']"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>
