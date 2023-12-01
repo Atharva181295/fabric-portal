@@ -1,8 +1,15 @@
 <div class="page-container">
+  <div class="return">
+    <button mat-icon-button class="back-btn" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h5 class="title" (click)="goBack()" style="cursor: pointer;">Back</h5>
+  </div>
     <div class="card-container">
       <mat-card class="card">
         <mat-card-title>Add Project</mat-card-title>
         <mat-divider></mat-divider>
+        <br>
         <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
           <!-- Name -->
           <mat-form-field appearance="fill">

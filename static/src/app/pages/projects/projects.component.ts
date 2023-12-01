@@ -53,6 +53,10 @@ export class ProjectsComponent implements AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  goBack(): void {
+    this.router.navigate(['/dashboard']); 
+  }
+
   editProject(project: any): void {
     this.projectsService.getProjectById(project.id).subscribe(
       (projectDetails) => {

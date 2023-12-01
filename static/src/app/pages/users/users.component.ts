@@ -78,6 +78,10 @@ export class UsersComponent implements AfterViewInit {
     );
   }
 
+  goBack(): void {
+    this.router.navigate(['/dashboard']); 
+  }
+
   deleteUser(user: any): void {
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       width: '250px',

@@ -55,6 +55,10 @@ export class AddUserComponent implements OnInit {
     });
   }
 
+  goBack(): void {
+    this.router.navigate(['/users']); 
+  }
+
   onSubmit(): void {
     if (this.userForm.valid) {
       const userData = this.userForm.value;

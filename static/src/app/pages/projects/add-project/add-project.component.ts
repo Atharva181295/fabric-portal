@@ -52,6 +52,10 @@ export class AddProjectComponent implements OnInit {
     });
   }
 
+  goBack(): void {
+    this.router.navigate(['/projects']); 
+  }
+
   onSubmit(): void {
     if (this.projectForm.valid) {
       const projectData = this.projectForm.value;

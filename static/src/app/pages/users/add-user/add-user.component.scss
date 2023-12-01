@@ -1,43 +1,51 @@
 .page-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
-  
-  .card-container {
-    width: 600px; /* Adjust the width as needed */
-  }
-  
-  .card {
-    width: 100%;
-    padding: 16px;
-  }
-  
-  .button-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 16px;
-  }
-  
-  /* Center the form content */
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
 
-  mat-form-field{
-    width: 80%;
-  }
+.return {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+}
 
-  mat-card-title{
-    text-align: center;
-  }
-  
+.back-btn {
+  margin-right: 16px;
+}
 
-  .card {
-    width: 100%;
-    padding: 16px;
-    box-shadow: 0px 2px 4px rgba(0, 0.5, 0.8, 0.5); /* Adjust the shadow as needed */
-  }
+.title {
+  margin: 0;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.card {
+  width: 600px;
+  padding: 16px;
+  box-shadow: 0px 2px 4px rgba(0.8, 0.5, 0.8, 0.5);
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+mat-form-field {
+  width: 80%;
+}
+
+mat-card-title {
+  text-align: center;
+}
