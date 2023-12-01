@@ -5,12 +5,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProjectsService } from './projects.service';
 import { Router } from '@angular/router';
-import { EditProjectDialogComponent } from '../../components/edit-project-dialog/edit-project-dialog.component'; // Make sure to replace this with your actual dialog component
+import { EditProjectDialogComponent } from '../../components/edit-project-dialog/edit-project-dialog.component';
 
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
-  styleUrls: ['./projects.component.scss']
+  styleUrls: ['./projects.component.scss'],
 })
 export class ProjectsComponent implements AfterViewInit {
   projects: any[] = [];
@@ -38,7 +38,7 @@ export class ProjectsComponent implements AfterViewInit {
         code: project.code,
         start_date: project.start_date,
         end_date: project.end_date,
-        description: project.description
+        description: project.description,
       }));
 
       this.dataSource = new MatTableDataSource<any>(this.projects);
@@ -54,20 +54,30 @@ export class ProjectsComponent implements AfterViewInit {
   }
 
   editProject(project: any): void {
-    // Fetch project details by ID
     this.projectsService.getProjectById(project.id).subscribe(
       (projectDetails) => {
-        // Open the dialog and pass project details as data
         const dialogRef = this.dialog.open(EditProjectDialogComponent, {
           width: '350px',
-          data: { project: projectDetails }
+          data: { project: projectDetails, projectId: project.id },
         });
 
-        // Subscribe to dialog close event
-        dialogRef.afterClosed().subscribe(result => {
-          // Handle any data returned from the dialog if needed
+        dialogRef.componentInstance.onUpdateProject.subscribe(
+          (updatedProject: any) => {
+            const index = this.projects.findIndex(
+              (p) => p.id === updatedProject.projectId
+            );
+            if (index !== -1) {
+              this.projects[index] = {
+                ...this.projects[index],
+                ...updatedProject.projectData,
+              };
+              this.dataSource.data = this.projects;
+            }
+          }
+        );
+
+        dialogRef.afterClosed().subscribe((result) => {
           console.log('The dialog was closed with result:', result);
-          // You can add logic to update the project or handle other actions here
         });
       },
       (error) => {
@@ -79,16 +89,16 @@ export class ProjectsComponent implements AfterViewInit {
   deleteProject(project: any): void {
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       width: '250px',
-      data: { message: 'Are you sure you want to delete this project?' }
+      data: { message: 'Are you sure you want to delete this project?' },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result === 'confirm') {
         this.projectsService.deleteProject(project.id).subscribe(
           () => {
             this.updatePaginator();
           },
-          error => {
+          (error) => {
             console.error('Error deleting project', error);
           }
         );

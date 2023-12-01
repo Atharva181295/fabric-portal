@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { ProjectsService } from './../projects.service'; // Make sure to import the correct service
+import { ProjectsService } from './../projects.service'; 
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { DatePipe } from '@angular/common'; // Import DatePipe
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-add-project',
@@ -16,7 +16,7 @@ export class AddProjectComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private projectService: ProjectsService, // Make sure to use the correct service
+    private projectService: ProjectsService, 
     private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar
@@ -30,7 +30,8 @@ export class AddProjectComponent implements OnInit {
       code: ['', [Validators.required]],
       start_date: ['', [Validators.required]],
       end_date: ['', [Validators.required]],
-      description: ['', [Validators.required]]
+      description: ['', [Validators.required]],
+      user: 1,
     }, {
       validator: this.dateRangeValidator
     });
@@ -60,7 +61,6 @@ export class AddProjectComponent implements OnInit {
     if (this.projectForm.valid) {
       const projectData = this.projectForm.value;
 
-      // Format dates using Angular's DatePipe
       projectData.start_date = this.formatDate(projectData.start_date);
       projectData.end_date = this.formatDate(projectData.end_date);
 
@@ -101,15 +101,14 @@ export class AddProjectComponent implements OnInit {
     this.snackBar.open(message, 'Close', config);
   }
 
-  // Custom validator for date range
   private dateRangeValidator(control: AbstractControl): { [key: string]: boolean } | null {
     const startDate = control.get('start_date');
     const endDate = control.get('end_date');
 
     if (!startDate || !endDate || new Date(startDate.value) <= new Date(endDate.value)) {
-      return null; // Date range is valid
+      return null; 
     } else {
-      return { 'invalidDateRange': true }; // Date range is invalid
+      return { 'invalidDateRange': true };
     }
   }
 

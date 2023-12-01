@@ -9,6 +9,7 @@ export class AuthService {
   private loginUrl = 'api/login/';
   private logoutUrl = 'api/logout/';
   private checAuth = 'api/checkauth/';
+  private userInfoUrl = 'api/whoami/';
 
 
   private isAuthenticatedFlag: boolean = false;
@@ -56,6 +57,15 @@ export class AuthService {
       }).catch((error) => console.log(error));
   }
 
+  async getUserInfo(): Promise<any> {
+    try {
+      return await this.http.get<any>(`${this.baseUrl}${this.userInfoUrl}`).toPromise();
+    } catch (error) {
+      console.error('Error getting user info:', error);
+      throw error;
+    }
+  }
+
   private getUrl(endpoint: string): string {
     return this.baseUrl + endpoint;
   }
@@ -74,4 +84,5 @@ export class AuthService {
   private removeCookie(name: string): void {
     document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
   }
+  
 }

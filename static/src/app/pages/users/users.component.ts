@@ -52,21 +52,24 @@ export class UsersComponent implements AfterViewInit {
   }
 
   editUser(user: any): void {
-    console.log(user.id)
-    // Fetch user details by ID
     this.userService.getUserById(user.id).subscribe(
       (userDetails) => {
-        // Open the dialog and pass user details as data
         const dialogRef = this.dialog.open(EditUserDialogComponent, {
           width: '350px',
           data: { user: userDetails, userId: user.id }
         });
 
-        // Subscribe to dialog close event
+        dialogRef.componentInstance.onUpdateUser.subscribe((updatedUser: any) => {
+          
+          const index = this.users.findIndex(u => u.id === updatedUser.userId);
+          if (index !== -1) {
+            this.users[index] = { ...this.users[index], ...updatedUser.userData };
+            this.dataSource.data = this.users;
+          }
+        });
+
         dialogRef.afterClosed().subscribe(result => {
-          // Handle any data returned from the dialog if needed
           console.log('The dialog was closed with result:', result);
-          // You can add logic to update the user or handle other actions here
         });
       },
       (error) => {

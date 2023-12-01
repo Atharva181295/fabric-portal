@@ -61,7 +61,7 @@ export function initializeAppFactory(authService: AuthService) {
     AddVenueComponent,
     LoaderComponent,
     EditUserDialogComponent,
-    EditProjectDialogComponent
+    EditProjectDialogComponent,
   ],
   imports: [
     BrowserModule,

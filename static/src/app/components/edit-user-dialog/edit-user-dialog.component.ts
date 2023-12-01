@@ -1,7 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsersService } from '../../pages/users/users.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-edit-user-dialog',
@@ -10,10 +11,12 @@ import { UsersService } from '../../pages/users/users.service';
 })
 export class EditUserDialogComponent implements OnInit {
   editForm!: FormGroup;
+  public onUpdateUser: EventEmitter<any> = new EventEmitter();
 
   constructor(
     private fb: FormBuilder,
     private userService: UsersService,
+    private snackBar: MatSnackBar, // Inject MatSnackBar
     public dialogRef: MatDialogRef<EditUserDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
@@ -31,17 +34,29 @@ export class EditUserDialogComponent implements OnInit {
   onSaveClick(): void {
     if (this.editForm.valid) {
       const userData = this.editForm.value;
-
-      // Assuming you have a user ID in the data object
       const userId = this.data.userId;
 
       this.userService.updateUser(userId, userData).subscribe(
         (response) => {
           console.log('User updated successfully', response);
-          this.dialogRef.close(response); // You can pass data back to the calling component if needed
+          
+          this.snackBar.open('User updated successfully', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top', 
+          });
+          
+          
+          this.onUpdateUser.emit({ userId, userData });
+          this.dialogRef.close(response);
         },
         (error) => {
           console.error('Error updating user', error);
+         
+          this.snackBar.open('Error updating user', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top', 
+            panelClass: ['error-snackbar'],
+          });
         }
       );
     }

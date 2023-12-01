@@ -1,0 +1,13 @@
+<div *ngIf="userDetails">
+    <h2>User Details</h2>
+    <ul>
+      <li>ID: {{ userDetails.id }}</li>
+      <li>Last Login: {{ userDetails.last_login }}</li>
+      <li>Username: {{ userDetails.username }}</li>
+      <li>Name: {{ userDetails.name }}</li>
+      <li>Email: {{ userDetails.email }}</li>
+
+    </ul>
+    <button (click)="openChangePasswordDialog()">Change Password</button>
+  </div>
+
