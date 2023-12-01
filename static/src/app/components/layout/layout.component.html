@@ -8,7 +8,7 @@
           </div>
           <div style="text-align: right">
             <button mat-button [matMenuTriggerFor]="menu" class="right-align">
-              <span>{{username}}</span>
+              <span>{{userInfo}}</span>
               <mat-icon>arrow_drop_down</mat-icon>
             </button>
             <mat-menu #menu="matMenu" aligns="end">
@@ -17,7 +17,7 @@
                 <span>My Account</span>
               </button>
               <button mat-menu-item
-                      (click)="gotoPage('my-account/change-password')">
+                      (click)="gotoPage('set-password')">
                 <mat-icon>remove_red_eye</mat-icon>
                 <span>Change Password</span>
               </button>

@@ -1,13 +1,20 @@
-<div *ngIf="userDetails">
-    <h2>User Details</h2>
-    <ul>
-      <li>ID: {{ userDetails.id }}</li>
-      <li>Last Login: {{ userDetails.last_login }}</li>
-      <li>Username: {{ userDetails.username }}</li>
-      <li>Name: {{ userDetails.name }}</li>
-      <li>Email: {{ userDetails.email }}</li>
+<div class="centered-card">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>User Account Details</mat-card-title>
+    </mat-card-header>
 
-    </ul>
-    <button (click)="openChangePasswordDialog()">Change Password</button>
-  </div>
+    <mat-divider></mat-divider>
 
+    <mat-card-content *ngIf="userInfo">
+      
+      <ul>
+        <!-- <li>ID: {{ userInfo.id }}</li>
+        <li>Last Login: {{ userInfo.last_login }}</li> -->
+        <li>Username: {{ userInfo.username }}</li>
+        <li>Name: {{ userInfo.name }}</li>
+        <li>Email: {{ userInfo.email }}</li>
+      </ul>
+    </mat-card-content>
+  </mat-card>
+</div>

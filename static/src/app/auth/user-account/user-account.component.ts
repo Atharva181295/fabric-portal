@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../auth.service';
-import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-user-account',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,MatCardModule, MatDividerModule],
   templateUrl: './user-account.component.html',
   styleUrl: './user-account.component.scss'
 })
 export class UserAccountComponent implements OnInit {
   userDetails: any;
+  userInfo: any;
 
   constructor(private authService: AuthService, private dialog: MatDialog) { }
 
@@ -27,20 +29,10 @@ export class UserAccountComponent implements OnInit {
     });
   }
 
-  openChangePasswordDialog(): void {
-    const dialogRef = this.dialog.open(ChangePasswordDialogComponent, {
-      width: '400px',
-    });
-
-  
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-    });
-  }
-
   async getUserInfo() {
     try {
       const userInfo = await this.authService.getUserInfo();
+      this.userInfo =userInfo;
       console.log('User Info:', userInfo);
     } catch (error) {
       console.error('Error getting user info:', error);

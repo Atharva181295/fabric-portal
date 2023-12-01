@@ -8,11 +8,13 @@ import { AuthService } from './../../auth/auth.service';
   styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent implements OnInit {
-  username: string = 'admin';
+  username: string= ''
+  userInfo: any;
 
   constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
+    this.getUserInfo();
   } 
 
   async logout(): Promise<void> {
@@ -21,6 +23,16 @@ export class LayoutComponent implements OnInit {
       this.gotoPage('login');
     } else {
       console.error('Logout failed');
+    }
+  }
+
+  async getUserInfo() {
+    try {
+      const userInfo = await this.authService.getUserInfo();
+      this.userInfo =userInfo.username;
+      console.log('User Info:', userInfo.username);
+    } catch (error) {
+      console.error('Error getting user info:', error);
     }
   }
 

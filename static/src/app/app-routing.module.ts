@@ -11,6 +11,7 @@ import { AddVenueComponent } from './pages/venues/add-venue/add-venue.component'
 import { AddUserComponent } from './pages/users/add-user/add-user.component';
 import { AuthGuard } from './auth/auth.guard'; 
 import { UserAccountComponent } from './auth/user-account/user-account.component';
+import { SetPasswordComponent } from './pages/users/set-password/set-password.component';
 
 const routes: Routes = [
   {
@@ -57,6 +58,10 @@ const routes: Routes = [
       {
         path: 'user-account',
         component: UserAccountComponent,
+      },
+      {
+        path: 'set-password',
+        component: SetPasswordComponent,
       },
     ],
   },

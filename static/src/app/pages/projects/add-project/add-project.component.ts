@@ -4,6 +4,7 @@ import { ProjectsService } from './../projects.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-add-project',
@@ -13,29 +14,23 @@ import { DatePipe } from '@angular/common';
 export class AddProjectComponent implements OnInit {
   projectForm!: FormGroup;
   projectId: number | null;
+  userInfo: any;
 
   constructor(
     private fb: FormBuilder,
     private projectService: ProjectsService, 
     private router: Router,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authService: AuthService
   ) {
     this.projectId = null;
   }
 
   ngOnInit(): void {
-    this.projectForm = this.fb.group({
-      name: ['', [Validators.required]],
-      code: ['', [Validators.required]],
-      start_date: ['', [Validators.required]],
-      end_date: ['', [Validators.required]],
-      description: ['', [Validators.required]],
-      user: 1,
-    }, {
-      validator: this.dateRangeValidator
-    });
-
+    this.initializeProjectForm();
+    this.getUserInfo();
+  
     this.route.params.subscribe(params => {
       this.projectId = params['id'];
       if (this.projectId) {
@@ -90,6 +85,39 @@ export class AddProjectComponent implements OnInit {
     } else {
       this.showSnackbar('Please fill in all required fields and ensure the date range is valid.');
     }
+  }
+
+  async getUserInfo() {
+    try {
+      const userInfo = await this.authService.getUserInfo();
+      this.userInfo = userInfo.id;
+      console.log('User Info:', this.userInfo);
+  
+      // Check if projectForm is not initialized
+      if (!this.projectForm) {
+        this.initializeProjectForm();
+      }
+  
+      // Update the user property in the projectForm after getting the user information
+      this.projectForm.patchValue({
+        user: this.userInfo,
+      });
+    } catch (error) {
+      console.error('Error getting user info:', error);
+    }
+  }
+  
+  private initializeProjectForm(): void {
+    this.projectForm = this.fb.group({
+      name: ['', [Validators.required]],
+      code: ['', [Validators.required]],
+      start_date: ['', [Validators.required]],
+      end_date: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      user: this.userInfo,
+    }, {
+      validator: this.dateRangeValidator
+    });
   }
 
   private showSnackbar(message: string): void {

@@ -10,8 +10,7 @@ export class AuthService {
   private logoutUrl = 'api/logout/';
   private checAuth = 'api/checkauth/';
   private userInfoUrl = 'api/whoami/';
-
-
+  private changePasswordUrl = 'api/change_password/';
   private isAuthenticatedFlag: boolean = false;
 
   constructor(private http: HttpClient) { }
@@ -59,10 +58,27 @@ export class AuthService {
 
   async getUserInfo(): Promise<any> {
     try {
-      return await this.http.get<any>(`${this.baseUrl}${this.userInfoUrl}`).toPromise();
+      const userInfoUrl = `${this.baseUrl}${this.userInfoUrl}`;
+      const response = await this.http.get<any>(userInfoUrl).toPromise();
+      console.log('User Info Response:', response);
+      return response;
     } catch (error) {
       console.error('Error getting user info:', error);
       throw error;
+    }
+  }
+
+  async changePassword(oldPassword: string, newPassword: string): Promise<boolean> {
+    try {
+      const url = this.getUrl(this.changePasswordUrl);
+      const body = { old_password: oldPassword, new_password: newPassword };
+
+      await this.http.post<any>(url, body).toPromise();
+
+      return true;
+    } catch (error) {
+      console.error('Error changing password:', error);
+      return false;
     }
   }
 
