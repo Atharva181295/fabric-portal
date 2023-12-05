@@ -1,8 +1,9 @@
 from django.http import JsonResponse
-from rest_framework import views, generics, response, permissions, authentication, viewsets
+from rest_framework import generics,permissions, authentication
 from rest_framework.authentication import SessionAuthentication
 from django.contrib.auth import authenticate, login, logout
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from users.serializers import UserSerializer
@@ -22,16 +23,18 @@ class GetCSRFToken(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = (CsrfExemptSessionAuthentication, SessionAuthentication)
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         # return Response({'success': 'CSRF Cookie Set'})
-        return  JsonResponse({'success': 'CSRF cookie set'})
+        return JsonResponse({'success': 'CSRF cookie set'})
 
 
 class CheckAuthenticatedView(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = (CsrfExemptSessionAuthentication, SessionAuthentication)
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         print(request.user.is_authenticated)
         return JsonResponse({'is_authenticated': request.user.is_authenticated})
 
@@ -44,25 +47,26 @@ class RegisterView(generics.CreateAPIView):
     def perform_create(self, serializer):
         user = serializer.save()
         user.backend = settings.AUTHENTICATION_BACKENDS[0]
-        login(self.request, user)
+        # login(self.request, user)
 
 
 class LoginView(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = (CsrfExemptSessionAuthentication, SessionAuthentication)
 
-    def post(self, request):
+    @staticmethod
+    def post(request):
         data = json.loads(request.body)
         username = data.get('username')
         password = data.get('password')
-        csrf_token = request.META.get('CSRF_TOKEN')
-        print(request.COOKIES)
+        # csrf_token = request.META.get('CSRF_TOKEN')
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
             if user.is_active:
                 login(request, user)
-                return JsonResponse({'detail': 'Logged in successfully.','Cookies':request.COOKIES}, status=status.HTTP_200_OK)
+                print(request.COOKIES, 'session-id:',request.session.session_key)
+                return JsonResponse({'detail': 'Logged in successfully.', 'COOKIES': request.COOKIES, 'SESSION_ID': request.session.session_key}, status=status.HTTP_200_OK)
         else:
             return JsonResponse({'detail': 'User Name or Password is incorrect.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -71,7 +75,8 @@ class UserUpdateView(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = (CsrfExemptSessionAuthentication, SessionAuthentication)
 
-    def put(self, request):
+    @staticmethod
+    def put(request):
         serializer = UserSerializer(request.user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -82,7 +87,7 @@ class UserUpdateView(APIView):
 
 
 class UserView(generics.RetrieveAPIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (IsAuthenticated,)
     authentication_classes = (CsrfExemptSessionAuthentication, SessionAuthentication)
 
     serializer_class = UserSerializer
@@ -90,13 +95,17 @@ class UserView(generics.RetrieveAPIView):
 
     def get_object(self, *args, **kwargs):
         return self.request.user
+        # serializer = UserSerializer(self.request.user, data=self.request.data, partial=True)
+        # if serializer.is_valid():
+        #     return Response({'User Details': serializer.data}, status=status.HTTP_200_OK)
 
 
 class ChangePasswordView(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = (CsrfExemptSessionAuthentication, SessionAuthentication)
 
-    def post(self, request):
+    @staticmethod
+    def post(request):
         old_password = request.data.get('old_password')
         new_password = request.data.get('new_password')
         user = request.user
@@ -141,7 +150,8 @@ class UserDetail(generics.GenericAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    def get_user(self, pk):
+    @staticmethod
+    def get_user(pk):
         try:
             return User.objects.get(pk=pk)
         except:
@@ -149,16 +159,16 @@ class UserDetail(generics.GenericAPIView):
 
     def get(self, request, pk):
         users = self.get_user(pk=pk)
-        if users == None:
+        if users is None:
             return Response({"status": "fail", "message": f"Note with Id: {pk} not found"},
                             status=status.HTTP_404_NOT_FOUND)
 
         serializer = self.serializer_class(users)
-        return Response({"status": "success", "data": {"user": serializer.data}})
+        return Response({"status": "success", "data": {"user": serializer.data}}, status=status.HTTP_200_OK)
 
     def put(self, request, pk):
         users = self.get_user(pk)
-        if users == None:
+        if users is None:
             return Response({"status": "fail", "message": f"Note with Id: {pk} not found"},
                             status=status.HTTP_404_NOT_FOUND)
 
@@ -167,24 +177,25 @@ class UserDetail(generics.GenericAPIView):
         if serializer.is_valid():
             serializer.validated_data['updated_at'] = datetime.now()
             serializer.save()
-            return Response({"status": "success", "data": {"user": serializer.data}})
+            return Response({"status": "success", "data": {"user": serializer.data}}, status=status.HTTP_200_OK)
         return Response({"status": "fail", "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         users = self.get_user(pk)
-        if users == None:
+        if users is None:
             return Response({"status": "fail", "message": f"Note with Id: {pk} not found"},
                             status=status.HTTP_404_NOT_FOUND)
 
         users.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({"status": "User successfully Deleted"}, status.HTTP_204_NO_CONTENT)
 
 
 class DeleteAccountView(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = (CsrfExemptSessionAuthentication, SessionAuthentication)
 
-    def delete(self, request):
+    @staticmethod
+    def delete(request):
         user = request.user
         user.delete()
         logout(request)
@@ -195,6 +206,11 @@ class LogoutView(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = (CsrfExemptSessionAuthentication, SessionAuthentication)
 
-    def post(self, request):
+    @staticmethod
+    def post(request):
         logout(request)
         return Response({'detail': 'Logged out successfully.'}, status=status.HTTP_200_OK)
+        # if not request.user.is_authenticated:
+        #     return JsonResponse({'detail': 'You\'re not logged in.'}, status=400)
+        # logout(request)
+        # return Response({'detail': 'Logged out successfully.'}, status=status.HTTP_200_OK)

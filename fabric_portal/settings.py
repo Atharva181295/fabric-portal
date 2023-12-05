@@ -40,10 +40,10 @@ INSTALLED_APPS = [
     'fabric_portal_app.apps.FabricPortalAppConfig',
     'users.apps.UsersConfig',
     'projects.apps.ProjectsConfig',
-    'rest_framework',
-    'corsheaders',
-    'rest_framework.authtoken',
-    'django_extensions'
+    'rest_framework',# new
+    'corsheaders',  # new
+    'rest_framework.authtoken',# new
+    'django_extensions'# new
 ]
 
 MIDDLEWARE = [
@@ -176,23 +176,25 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # SESSION_COOKIE_HTTPONLY = True
 
 
-# Default settings for  two domains URL runing same time
+# Default settings for  two domains URL running same time
 
 CSRF_COOKIE_SAMESITE = 'Lax'
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_HTTPONLY = True
 SESSION_COOKIE_HTTPONLY = True
-CSRF_TRUSTED_ORIGINS = ['http://localhost:4200','http://127.0.0.1:4200','http://localhost:8000','http://127.0.0.1:8000']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:4200']
+
+# PROD ONLY
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200',
     'http://127.0.0.1:4200',
-    'http://localhost:8000',
-    'http://127.0.0.1:8000'
 ]
 CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
 CORS_ALLOW_CREDENTIALS = True
 
-#sionid Expire default is 1209600 sec = 14 days
+# session id Expire default is 1209600 sec = 14 days
 
 SESSION_COOKIE_AGE = 1800   # 30 Min
