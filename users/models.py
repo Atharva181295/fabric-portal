@@ -3,7 +3,7 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, username,email, name, password=None):
+    def create_user(self, username,email, name, profile_image, password=None):
         """
         Creates and saves a User with the given email, name and password.
         """
@@ -13,17 +13,20 @@ class UserManager(BaseUserManager):
             raise ValueError("Users must have an email ")
         elif not name:
             raise ValueError("Users must have an name ")
+        # elif not profile_image:
+        #     raise ValueError("Users must have an profile_image ")
         user = self.model(
             username=self.normalize_email(username),
             name=name,
-            email=email
+            email=email,
+            profile_image=profile_image
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email,username, name, password=None):
+    def create_superuser(self, email,username, name, profile_image, password=None):
         """
         Creates and saves a superuser with the given email, name and password.
         """
@@ -31,7 +34,8 @@ class UserManager(BaseUserManager):
             username=username,
             password=password,
             name=name,
-            email=email
+            email=email,
+            profile_image=profile_image
         )
         user.is_admin = True
         user.save(using=self._db)
@@ -46,6 +50,7 @@ class User(AbstractBaseUser):
     )
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255,unique=True)
+    profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -54,7 +59,7 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ["name","email"]
+    REQUIRED_FIELDS = ["name", "email", "profile_image"]
 
     def __str__(self):
         return self.username
