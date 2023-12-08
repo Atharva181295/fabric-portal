@@ -20,7 +20,7 @@ class CsrfExemptSessionAuthentication(authentication.SessionAuthentication):
 
 
 class GetCSRFToken(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (CsrfExemptSessionAuthentication, SessionAuthentication)
 
     @staticmethod
@@ -61,18 +61,19 @@ class LoginView(APIView):
         password = data.get('password')
         # csrf_token = request.META.get('CSRF_TOKEN')
         user = authenticate(request, username=username, password=password)
+        token, created = Token.objects.get_or_create(user=user)
 
         if user is not None:
             if user.is_active:
                 login(request, user)
-                print(request.COOKIES, 'session-id:',request.session.session_key)
-                return JsonResponse({'detail': 'Logged in successfully.', 'COOKIES': request.COOKIES, 'SESSION_ID': request.session.session_key}, status=status.HTTP_200_OK)
+                print(request.COOKIES, 'session-id:',request.session.session_key,'token:',token.key)
+                return JsonResponse({'detail': 'Logged in successfully.', 'COOKIES': request.COOKIES, 'SESSION_ID': request.session.session_key, 'token': token.key}, status=status.HTTP_200_OK)
         else:
             return JsonResponse({'detail': 'User Name or Password is incorrect.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserUpdateView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (CsrfExemptSessionAuthentication, SessionAuthentication)
 
     @staticmethod
@@ -87,7 +88,7 @@ class UserUpdateView(APIView):
 
 
 class UserView(generics.RetrieveAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (CsrfExemptSessionAuthentication, SessionAuthentication)
 
     serializer_class = UserSerializer
@@ -101,7 +102,7 @@ class UserView(generics.RetrieveAPIView):
 
 
 class ChangePasswordView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (CsrfExemptSessionAuthentication, SessionAuthentication)
 
     @staticmethod
@@ -119,7 +120,7 @@ class ChangePasswordView(APIView):
 
 
 class AllUserDetail(generics.GenericAPIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (CsrfExemptSessionAuthentication, SessionAuthentication)
     serializer_class = UserSerializer
     queryset = User.objects.all()
@@ -145,7 +146,7 @@ class AllUserDetail(generics.GenericAPIView):
 
 
 class UserDetail(generics.GenericAPIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (CsrfExemptSessionAuthentication, SessionAuthentication)
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -187,11 +188,11 @@ class UserDetail(generics.GenericAPIView):
                             status=status.HTTP_404_NOT_FOUND)
 
         users.delete()
-        return Response({"status": "User successfully Deleted"}, status.HTTP_204_NO_CONTENT)
+        return Response({"status": f"User(ID:{pk}) successfully Deleted"}, status.HTTP_204_NO_CONTENT)
 
 
 class DeleteAccountView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (CsrfExemptSessionAuthentication, SessionAuthentication)
 
     @staticmethod
@@ -203,7 +204,7 @@ class DeleteAccountView(APIView):
 
 
 class LogoutView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (CsrfExemptSessionAuthentication, SessionAuthentication)
 
     @staticmethod

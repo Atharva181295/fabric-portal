@@ -5,12 +5,11 @@ from projects.models import Project
 from projects.serializers import ProjectSerializer
 import math
 from datetime import datetime
-
 from users.views import CsrfExemptSessionAuthentication
 
 
 class Projects(generics.GenericAPIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (CsrfExemptSessionAuthentication, SessionAuthentication)
     serializer_class = ProjectSerializer
     queryset = Project.objects.all()
@@ -44,7 +43,7 @@ class Projects(generics.GenericAPIView):
 
 
 class ProjectDetail(generics.GenericAPIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (CsrfExemptSessionAuthentication, SessionAuthentication)
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
@@ -82,5 +81,6 @@ class ProjectDetail(generics.GenericAPIView):
             return Response({"status": "fail", "message": f"Note with Id: {pk} not found"}, status=status.HTTP_404_NOT_FOUND)
 
         project.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({"status": "success", "message": f"project(ID:{pk}) successfully deleted"}, status=status.HTTP_204_NO_CONTENT)
+
 
