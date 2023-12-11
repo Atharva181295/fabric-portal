@@ -4,13 +4,13 @@
     
     <mat-form-field appearance="fill">
       <mat-label>Username</mat-label>
-      <input matInput formControlName="username" required>
+      <input matInput formControlName="username" >
     </mat-form-field>
     <br>
 
     <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>
-      <input matInput formControlName="email" required email>
+      <input matInput formControlName="email"  email>
       <mat-error *ngIf="editForm.get('email')?.hasError('email')">
         Please enter a valid email address.
       </mat-error>
@@ -19,14 +19,20 @@
 
     <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
-      <input matInput formControlName="name" required>
+      <input matInput formControlName="name" >
     </mat-form-field>
     <br>
 
     <mat-form-field appearance="fill">
       <mat-label>Profile Image</mat-label> <br>
-      <input matInput type="file" (change)="onFileSelected($event)" />
+      <div class="input-container">
+        <button mat-button>
+          <mat-icon>attach_file</mat-icon> Choose File
+        </button>
+        <input matInput type="file" (change)="onFileSelected($event)" />
+      </div>
     </mat-form-field>
+    
   </form>
 </mat-dialog-content>
 

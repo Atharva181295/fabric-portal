@@ -23,13 +23,32 @@ export class EditUserDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const userData = this.data.user.data.user; // Access the nested user data
+  
     this.editForm = this.fb.group({
-      username: [this.data.username, Validators.required],
-      email: [this.data.email, [Validators.required, Validators.email]],
-      name: [this.data.name, Validators.required],
-      // Add other fields as needed
+      username: [userData.username],
+      email: [userData.email, [Validators.email]],
+      name: [userData.name],
+      profile_image: null,
+    });
+  
+    // Patch form values and mark controls as touched
+    this.editForm.patchValue({
+      username: userData.username,
+      email: userData.email,
+      name: userData.name,
+      profile_image: null,
+    });
+  
+    // Mark all controls as touched
+    Object.keys(this.editForm.controls).forEach(key => {
+      this.editForm.get(key)?.markAsTouched();
     });
   }
+  
+  
+  
+  
 
   onSaveClick(): void {
     if (this.editForm.valid) {

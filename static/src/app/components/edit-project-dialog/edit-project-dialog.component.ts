@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProjectsService } from '../../pages/projects/projects.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-edit-project-dialog',
@@ -22,8 +23,13 @@ export class EditProjectDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const projectData = this.data.project.data.project;
     this.editForm = this.fb.group({
-      name: [this.data.name, Validators.required],
+      name: [projectData.name],
+      code: [projectData.code],
+      start_date: [projectData.start_date],
+      end_date: [projectData.end_date],
+      description: [projectData.description],
     });
   }
 
@@ -31,6 +37,10 @@ export class EditProjectDialogComponent implements OnInit {
     if (this.editForm.valid) {
       const projectData = this.editForm.value;
       const projectId = this.data.projectId;
+
+
+      projectData.start_date = this.formatDate(projectData.start_date);
+      projectData.end_date = this.formatDate(projectData.end_date);
 
       this.projectService.updateProject(projectId, projectData).subscribe(
         (response) => {
@@ -41,7 +51,6 @@ export class EditProjectDialogComponent implements OnInit {
             verticalPosition: 'top',
           });
 
-      
           this.onUpdateProject.emit({ projectId, projectData });
           this.dialogRef.close(response);
         },
@@ -60,5 +69,11 @@ export class EditProjectDialogComponent implements OnInit {
 
   onCancelClick(): void {
     this.dialogRef.close();
+  }
+
+  // Format date using Angular's DatePipe
+  private formatDate(date: string): string {
+    const datePipe = new DatePipe('en-US');
+    return datePipe.transform(new Date(date), 'yyyy-MM-dd') || '';
   }
 }
