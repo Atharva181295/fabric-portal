@@ -65,11 +65,11 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ["name", "email", "profile_image"]
 
-    @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-    def create_auth_token(sender, instance=None, created=False, **kwargs):
-        if created:
-            from rest_framework.authtoken.models import Token
-            Token.objects.create(user=instance)
+    # @receiver(post_save, sender=settings.AUTH_USER_MODEL)
+    # def create_auth_token(sender, instance=None, created=False, **kwargs):
+    #     if created:
+    #         from rest_framework.authtoken.models import Token
+    #         Token.objects.create(user=instance)
 
     def __str__(self):
         return self.username

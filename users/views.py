@@ -61,15 +61,20 @@ class LoginView(APIView):
         password = data.get('password')
         # csrf_token = request.META.get('CSRF_TOKEN')
         user = authenticate(request, username=username, password=password)
-        token, created = Token.objects.get_or_create(user=user)
 
         if user is not None:
             if user.is_active:
                 login(request, user)
+                try:
+                    token = Token.objects.get(user_id=user.id)
+
+                except Token.DoesNotExist:
+                    token = Token.objects.create(user=user)
+
                 print(request.COOKIES, 'session-id:',request.session.session_key,'token:',token.key)
                 return JsonResponse({'detail': 'Logged in successfully.', 'COOKIES': request.COOKIES, 'SESSION_ID': request.session.session_key, 'token': token.key}, status=status.HTTP_200_OK)
         else:
-            return JsonResponse({'detail': 'User Name or Password is incorrect.'}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'detail': 'User Name or Password is incorrect.'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class UserUpdateView(APIView):
