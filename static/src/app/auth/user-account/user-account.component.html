@@ -18,6 +18,8 @@
       <ul>
         <!-- <li>ID: {{ userInfo.id }}</li>
         <li>Last Login: {{ userInfo.last_login }}</li> -->
+        <img *ngIf="userInfo.profile_image" [src]="userInfo.profile_image" alt="Profile Image" class="profile-image">
+
         <li>Username: {{ userInfo.username }}</li>
         <li>Name: {{ userInfo.name }}</li>
         <li>Email: {{ userInfo.email }}</li>
