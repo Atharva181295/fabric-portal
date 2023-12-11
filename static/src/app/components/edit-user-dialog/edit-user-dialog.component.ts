@@ -12,11 +12,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class EditUserDialogComponent implements OnInit {
   editForm!: FormGroup;
   public onUpdateUser: EventEmitter<any> = new EventEmitter();
+  selectedFile: File | null = null; // Variable to store the selected file
 
   constructor(
     private fb: FormBuilder,
     private userService: UsersService,
-    private snackBar: MatSnackBar, // Inject MatSnackBar
+    private snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<EditUserDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
@@ -27,31 +28,40 @@ export class EditUserDialogComponent implements OnInit {
       email: [this.data.email, [Validators.required, Validators.email]],
       name: [this.data.name, Validators.required],
       // Add other fields as needed
-      
     });
   }
 
   onSaveClick(): void {
     if (this.editForm.valid) {
+      const formData = new FormData();
       const userData = this.editForm.value;
       const userId = this.data.userId;
-
-      this.userService.updateUser(userId, userData).subscribe(
+  
+      // Append form data
+      Object.keys(userData).forEach(key => {
+        formData.append(key, userData[key]);
+      });
+  
+      // Append profile image if it's not null
+      if (this.selectedFile) {
+        formData.append('profile_image', this.selectedFile as Blob, (this.selectedFile as File).name);
+      }
+  
+      this.userService.updateUser(userId, formData).subscribe(
         (response) => {
           console.log('User updated successfully', response);
-          
+  
           this.snackBar.open('User updated successfully', 'Close', {
             duration: 3000,
             verticalPosition: 'top', 
           });
-          
-          
+  
           this.onUpdateUser.emit({ userId, userData });
           this.dialogRef.close(response);
         },
         (error) => {
           console.error('Error updating user', error);
-         
+  
           this.snackBar.open('Error updating user', 'Close', {
             duration: 3000,
             verticalPosition: 'top', 
@@ -59,6 +69,13 @@ export class EditUserDialogComponent implements OnInit {
           });
         }
       );
+    }
+  }
+
+  onFileSelected(event: any): void {
+    const fileInput = event.target;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.selectedFile = fileInput.files[0];
     }
   }
 

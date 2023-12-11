@@ -12,6 +12,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 export class AddUserComponent implements OnInit {
   userForm!: FormGroup;
   userId: number | null;
+  selectedFile: File | null = null; // Variable to store the selected file
 
   constructor(
     private fb: FormBuilder,
@@ -29,7 +30,9 @@ export class AddUserComponent implements OnInit {
       password: ['', [Validators.required]],
       confirm_password: ['', [Validators.required]],
       name: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
+      // Profile Image
+      profile_image: [null]
     }, {
       validator: this.passwordMatchValidator
     });
@@ -44,7 +47,8 @@ export class AddUserComponent implements OnInit {
               password: '',
               confirm_password: '',
               name: userDetails.name,
-              email: userDetails.email
+              email: userDetails.email,
+              profile_image: null // Assuming user details do not include the profile image URL
             });
           },
           (error) => {
@@ -56,15 +60,28 @@ export class AddUserComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/users']); 
+    this.router.navigate(['/users']);
   }
 
   onSubmit(): void {
     if (this.userForm.valid) {
+      const formData = new FormData();
       const userData = this.userForm.value;
 
+      // Append form data
+      Object.keys(userData).forEach(key => {
+        formData.append(key, userData[key]);
+      });
+
+      // Append profile image
+      if (this.selectedFile) {
+        formData.append('profile_image', this.selectedFile as Blob, (this.selectedFile as File).name);
+      } else {
+        formData.append('profile_image', ''); // or you can append a default value if needed
+      }
+
       if (this.userId) {
-        this.userService.updateUser(this.userId, userData).subscribe(
+        this.userService.updateUser(this.userId, formData).subscribe(
           (response) => {
             console.log('User updated successfully', response);
             this.showSnackbar('User updated successfully');
@@ -75,7 +92,7 @@ export class AddUserComponent implements OnInit {
           }
         );
       } else {
-        this.userService.addUser(userData).subscribe(
+        this.userService.addUser(formData).subscribe(
           (response) => {
             console.log('User added successfully', response);
             this.showSnackbar('User added successfully');
@@ -88,6 +105,13 @@ export class AddUserComponent implements OnInit {
       }
     } else {
       this.showSnackbar('Please fill in all required fields and ensure passwords match.');
+    }
+  }
+
+  onFileSelected(event: any): void {
+    const fileInput = event.target;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.selectedFile = fileInput.files[0];
     }
   }
 

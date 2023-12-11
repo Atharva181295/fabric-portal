@@ -1,14 +1,13 @@
 <h2 mat-dialog-title>Edit User</h2>
 <mat-dialog-content>
   <form [formGroup]="editForm">
-    <!-- Username -->
+    
     <mat-form-field appearance="fill">
       <mat-label>Username</mat-label>
       <input matInput formControlName="username" required>
     </mat-form-field>
     <br>
 
-    <!-- Email -->
     <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>
       <input matInput formControlName="email" required email>
@@ -18,16 +17,19 @@
     </mat-form-field>
     <br>
 
-    <!-- Name -->
     <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
       <input matInput formControlName="name" required>
     </mat-form-field>
     <br>
-    <!-- Add other fields as needed -->
 
+    <mat-form-field appearance="fill">
+      <mat-label>Profile Image</mat-label> <br>
+      <input matInput type="file" (change)="onFileSelected($event)" />
+    </mat-form-field>
   </form>
 </mat-dialog-content>
+
 <mat-dialog-actions>
   <button mat-button (click)="onCancelClick()">Close</button>
   <button mat-button color="primary" (click)="onSaveClick()">Update</button>

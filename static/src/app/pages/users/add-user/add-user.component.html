@@ -94,6 +94,11 @@
           </mat-error>
         </mat-form-field>
 
+        <mat-form-field appearance="fill">
+          <mat-label>Profile Image</mat-label> <br>
+          <input matInput type="file" (change)="onFileSelected($event)" />
+        </mat-form-field>
+
         <!-- Submit Button -->
         <div class="button-container">
           <button mat-flat-button type="submit" color="primary">
