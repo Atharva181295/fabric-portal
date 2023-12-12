@@ -23,13 +23,13 @@ export class EditUserDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const userData = this.data.user.data.user; // Access the nested user data
+    const userData = this.data.user.data.user;
   
     this.editForm = this.fb.group({
       username: [userData.username],
       email: [userData.email, [Validators.email]],
       name: [userData.name],
-      profile_image: null,
+      profile_image: [userData.profile_image]
     });
   
     // Patch form values and mark controls as touched
@@ -37,7 +37,7 @@ export class EditUserDialogComponent implements OnInit {
       username: userData.username,
       email: userData.email,
       name: userData.name,
-      profile_image: null,
+      profile_image: userData.profile_image,
     });
   
     // Mark all controls as touched
@@ -58,6 +58,10 @@ export class EditUserDialogComponent implements OnInit {
   
       // Append form data
       Object.keys(userData).forEach(key => {
+        // Conditionally append profile_image only if it's not null
+        if (key === 'profile_image' && userData[key] === null) {
+          return; // Skip appending null profile_image
+        }
         formData.append(key, userData[key]);
       });
   
@@ -72,7 +76,7 @@ export class EditUserDialogComponent implements OnInit {
   
           this.snackBar.open('User updated successfully', 'Close', {
             duration: 3000,
-            verticalPosition: 'top', 
+            verticalPosition: 'top',
           });
   
           this.onUpdateUser.emit({ userId, userData });
@@ -83,18 +87,20 @@ export class EditUserDialogComponent implements OnInit {
   
           this.snackBar.open('Error updating user', 'Close', {
             duration: 3000,
-            verticalPosition: 'top', 
+            verticalPosition: 'top',
             panelClass: ['error-snackbar'],
           });
         }
       );
     }
   }
+  
 
   onFileSelected(event: any): void {
     const fileInput = event.target;
     if (fileInput.files && fileInput.files.length > 0) {
       this.selectedFile = fileInput.files[0];
+      console.log('Selected File:', this.selectedFile);
     }
   }
 

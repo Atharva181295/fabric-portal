@@ -8,12 +8,13 @@
 <div class="centered-card">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>User Account Details</mat-card-title>
+      <!-- Center the title using Angular Flex Layout -->
+      <mat-card-title class="mat-card-title-centered">User Account Details</mat-card-title>
     </mat-card-header>
 
     <mat-divider></mat-divider>
 
-    <mat-card-content *ngIf="userInfo">
+    <mat-card-content *ngIf="userInfo" class="mat-card-content-centered">
       
       <ul>
         <!-- <li>ID: {{ userInfo.id }}</li>
@@ -24,6 +25,10 @@
         <li>Name: {{ userInfo.name }}</li>
         <li>Email: {{ userInfo.email }}</li>
       </ul>
+     
+      <mat-divider></mat-divider> <br>
+      <button mat-raised-button color="primary" (click)="editUser(userInfo)" class="mat-button-centered">Edit User Profile</button>
+
     </mat-card-content>
   </mat-card>
 </div>

@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>Edit User</h2>
 <mat-dialog-content>
-  <form [formGroup]="editForm">
+  <form [formGroup]="editForm" enctype="multipart/form-data">
     
     <mat-form-field appearance="fill">
       <mat-label>Username</mat-label>
@@ -30,6 +30,7 @@
           <mat-icon>attach_file</mat-icon> Choose File
         </button>
         <input matInput type="file" (change)="onFileSelected($event)" />
+        <pre></pre>
       </div>
     </mat-form-field>
     
