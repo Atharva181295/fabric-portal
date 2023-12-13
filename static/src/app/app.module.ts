@@ -41,6 +41,7 @@ import { EditUserDialogComponent } from './components/edit-user-dialog/edit-user
 import { MatNativeDateModule } from '@angular/material/core';
 import { EditProjectDialogComponent } from './components/edit-project-dialog/edit-project-dialog.component';
 import { AddUserComponent } from './pages/users/add-user/add-user.component';
+import { MatSelectModule } from '@angular/material/select';
 export function initializeAppFactory(authService: AuthService) {
   return () => authService.whoami();
 }
@@ -87,7 +88,8 @@ export function initializeAppFactory(authService: AuthService) {
     MatDividerModule,
     MatPaginatorModule,
     MatNativeDateModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatSelectModule
   ],
   providers: [
     LoaderService,

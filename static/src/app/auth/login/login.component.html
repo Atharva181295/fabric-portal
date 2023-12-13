@@ -28,13 +28,13 @@
     <div class="field">
       <mat-form-field>
         <mat-label>Password</mat-label>
-        <input matInput
-               appBlockCopyPaste
-               type="password"
-               name="password"
-               formControlName="password"
-               placeholder="Enter Password"
-               required>
+        <input matInput appBlockCopyPaste
+               [type]="hidePassword ? 'password' : 'text'"
+               name="password" formControlName="password"
+               placeholder="Enter Password" required>
+        <button mat-icon-button matSuffix (click)="togglePasswordVisibility($event)">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
       </mat-form-field>
     </div>
 

@@ -95,6 +95,24 @@
         </mat-form-field>
 
         <mat-form-field appearance="fill">
+          <mat-label>Role</mat-label>
+          <mat-select  required>
+            <mat-option value="admin">Admin</mat-option>
+            <mat-option value="cp">CP</mat-option>
+            <mat-option value="invigilator">Invigilator</mat-option>
+          </mat-select>
+          <!-- <mat-error
+            *ngIf="
+              userForm.get('role')?.hasError('required') &&
+              userForm.get('role')?.touched
+            "
+          >
+            Role is required
+          </mat-error> -->
+        </mat-form-field>
+        
+
+        <mat-form-field appearance="fill">
           <mat-label>Profile Image</mat-label> <br>
           <input matInput type="file" (change)="onFileSelected($event)" />
         </mat-form-field>

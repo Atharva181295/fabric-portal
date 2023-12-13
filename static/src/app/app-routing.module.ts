@@ -12,6 +12,7 @@ import { AddUserComponent } from './pages/users/add-user/add-user.component';
 import { AuthGuard } from './auth/auth.guard'; 
 import { UserAccountComponent } from './auth/user-account/user-account.component';
 import { SetPasswordComponent } from './pages/users/set-password/set-password.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -65,6 +66,7 @@ const routes: Routes = [
       },
     ],
   },
+  { path: '**', component: NotFoundComponent }
 ];
 
 @NgModule({
