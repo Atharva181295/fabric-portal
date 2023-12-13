@@ -1,17 +1,40 @@
 from django.http import JsonResponse
 from rest_framework import generics,permissions, authentication
-from rest_framework.authentication import SessionAuthentication
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from django.contrib.auth import authenticate, login, logout
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from rest_framework.response import Response
 from users.serializers import UserSerializer
-from django.conf import settings
 import json
 from .models import *
 import math
 from datetime import datetime
+from django.core.cache import cache
+import time
+import redis
+from rest_framework.response import Response
+
+redis_instance = redis.StrictRedis(host='127.0.0.1', port=6379, db=1)
+
+def log_db_queries ( f ) :
+    from django.db import connection
+    def new_f ( * args , ** kwargs ) :
+        start_time = time.time()
+        res = f ( * args , ** kwargs )
+        print ( "\n\n" )
+        print ( "-"*80 )
+        print ("db queries log for %s:\n" % (f.__name__))
+        print ( " TOTAL COUNT : % s " % len ( connection.queries ) )
+        for q in connection.queries :
+            print ("%s: %s\n" % (q["time"] , q["sql"]))
+        end_time = time.time ()
+        duration = end_time - start_time
+        print ('\n Total time: {:.3f} ms'.format(duration * 1000.0))
+        print ("-"*80)
+        return res
+    return new_f
+
 
 
 class CsrfExemptSessionAuthentication(authentication.SessionAuthentication):
@@ -130,24 +153,37 @@ class AllUserDetail(generics.GenericAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
+    @log_db_queries
     def get(self, request):
         page_num = int(request.GET.get("page", 1))
         limit_num = int(request.GET.get("limit", 10))
         start_num = (page_num - 1) * limit_num
         end_num = limit_num * page_num
         search_param = request.GET.get("search")
-        users = User.objects.all()
-        total_projects = users.count()
-        if search_param:
-            users = users.filter(name__icontains=search_param)
-        serializer = self.serializer_class(users[start_num:end_num], many=True)
-        return Response({
-            "status": "success",
-            "total": total_projects,
-            "page": page_num,
-            "last_page": math.ceil(total_projects / limit_num),
-            "users": serializer.data
-        })
+        if search_param is not None:
+            cache_key = 'name' + search_param
+        else:
+            cache_key = 'name'
+
+        if cache_key in cache:
+            print("redis....")
+            queryset = cache.get(cache_key)
+            return Response(queryset)
+        else:
+            print('db.....')
+            users = User.objects.all()
+            total_projects = users.count()
+            if search_param:
+                users = users.filter(name__icontains=search_param)
+            serializer = self.serializer_class(users[start_num:end_num], many=True)
+            cache.set(cache_key, serializer.data, timeout=60*60)
+            return Response({
+                "status": "success",
+                "total": total_projects,
+                "page": page_num,
+                "last_page": math.ceil(total_projects / limit_num),
+                "users": serializer.data
+            })
 
 
 class UserDetail(generics.GenericAPIView):

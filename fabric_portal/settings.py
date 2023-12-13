@@ -15,11 +15,13 @@ import os
 from decouple import config
 from django.core.cache import cache
 import time
+import redis
 from rest_framework.response import Response
 from os import environ
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+REDIS_HOST = environ.get("REDIS_HOST", "127.0.0.1")
+REDIS_PORT = environ.get("REDIS_PORT", 6379)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -104,7 +106,18 @@ DATABASES = {
         'PORT': config('DB_PORT'),
     }
 }
+CACHE_TTL = 60 * 60
 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"redis://{REDIS_HOST}:{REDIS_PORT}/",  # Local Link provided by the redis-server command
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+        "KEY_PREFIX": "fabric"
+    }
+}
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
