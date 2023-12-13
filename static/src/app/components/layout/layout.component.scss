@@ -1,22 +1,33 @@
 .spacer {
-    flex: 1 auto;
-  }
-  
-  .container {
-    padding: 20px;
-  }
-  
-  .header-title {
-    cursor: pointer;
-  }
-  .header-grid{
-    display: grid;
-    width: 100%;
-    grid-template-columns: 2fr;
-    cursor: pointer;
-  }
-  .sub-header-grid{
-    display: grid;
-    grid-template-columns: 1fr 1fr
-  }
-  
+  flex: 1 auto;
+}
+
+.container {
+  padding: 20px;
+}
+
+.header-title {
+  cursor: pointer;
+}
+
+.header-grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 2fr;
+  cursor: pointer;
+}
+
+.sub-header-grid {
+  display: flex; /* Change to flex container */
+  justify-content: space-between; /* Align children with space in between */
+  align-items: center; /* Center items vertically */
+}
+
+.profile-image {
+  margin-top: 5px;
+  height: 30px;
+  width: 30px;
+  border-radius: 20px;
+  /* Adjust margin-bottom to vertically align the image with userInfo */
+  margin-bottom: -10px;
+}

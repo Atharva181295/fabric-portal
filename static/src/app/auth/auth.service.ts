@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,14 @@ export class AuthService {
   private checAuth = 'api/checkauth/';
   private userInfoUrl = 'api/whoami/';
   private changePasswordUrl = 'api/change_password/';
+  private userUpdateUrl = 'api/user_update/';
   private isAuthenticatedFlag: boolean = false;
+  private reloadUserData = new BehaviorSubject<boolean>(false);
+  reloadUserData$ = this.reloadUserData.asObservable();
+
+  setReloadUserData(value: boolean) {
+    this.reloadUserData.next(value);
+  }
 
   constructor(private http: HttpClient) { }
 
@@ -81,6 +89,24 @@ export class AuthService {
       return false;
     }
   }
+
+  async updateUserProfile(file: File): Promise<boolean> {
+    try {
+      const formData = new FormData();
+      formData.append('profileImage', file);
+  
+      await this.http.put<any>(this.getUrl(this.userUpdateUrl), formData).toPromise();
+  
+      // Assuming your API call was successful, you may want to trigger a reload of user data.
+      this.setReloadUserData(true);
+  
+      return true;
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+      return false;
+    }
+  }
+  
 
   private getUrl(endpoint: string): string {
     return this.baseUrl + endpoint;

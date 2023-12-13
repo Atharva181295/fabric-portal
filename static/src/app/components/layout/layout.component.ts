@@ -10,6 +10,7 @@ import { AuthService } from './../../auth/auth.service';
 export class LayoutComponent implements OnInit {
   username: string= ''
   userInfo: any;
+  profilePhoto: any;
 
   constructor(private router: Router, private authService: AuthService) {}
 
@@ -30,7 +31,8 @@ export class LayoutComponent implements OnInit {
     try {
       const userInfo = await this.authService.getUserInfo();
       this.userInfo =userInfo.username;
-      console.log('User Info:', userInfo.username);
+      this.profilePhoto = userInfo.profile_image;
+      console.log('User Info:', this.profilePhoto);
     } catch (error) {
       console.error('Error getting user info:', error);
     }

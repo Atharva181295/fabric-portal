@@ -8,7 +8,8 @@
           </div>
           <div style="text-align: right">
             <button mat-button [matMenuTriggerFor]="menu" class="right-align">
-              <span>{{userInfo}}</span>
+              <img *ngIf="profilePhoto" [src]="profilePhoto" alt="Profile Image" class="profile-image">
+              <span>  {{userInfo}}</span>
               <mat-icon>arrow_drop_down</mat-icon>
             </button>
             <mat-menu #menu="matMenu" aligns="end">
