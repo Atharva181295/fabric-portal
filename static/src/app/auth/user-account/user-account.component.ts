@@ -10,13 +10,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { EditUserDialogComponent } from '../../components/edit-user-dialog/edit-user-dialog.component';
 import { UsersService } from '../../pages/users/users.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-user-account',
   standalone: true,
-  imports: [CommonModule,MatCardModule, MatDividerModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule, MatCardModule, MatDividerModule, MatIconModule, MatButtonModule, MatMenuModule],
   templateUrl: './user-account.component.html',
-  styleUrl: './user-account.component.scss'
+  styleUrls: ['./user-account.component.scss']
 })
 export class UserAccountComponent implements OnInit {
   userDetails: any;
@@ -24,14 +25,17 @@ export class UserAccountComponent implements OnInit {
   users: any[] = [];
   dataSource = new MatTableDataSource<any>([]);
 
-
-  constructor(private authService: AuthService,
-     private dialog: MatDialog, private router: Router,
-     private userService: UsersService,) { }
+  constructor(
+    private authService: AuthService,
+    private dialog: MatDialog,
+    private router: Router,
+    private userService: UsersService,
+  ) {}
 
   ngOnInit(): void {
     this.fetchUserDetails();
     this.getUserInfo();
+    this.subscribeToReloadUserData();
   }
 
   fetchUserDetails(): void {
@@ -41,13 +45,13 @@ export class UserAccountComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/dashboard']); 
+    this.router.navigate(['/dashboard']);
   }
 
   async getUserInfo() {
     try {
       const userInfo = await this.authService.getUserInfo();
-      this.userInfo =userInfo;
+      this.userInfo = userInfo;
       console.log('User Info:', userInfo);
     } catch (error) {
       console.error('Error getting user info:', error);
@@ -63,7 +67,6 @@ export class UserAccountComponent implements OnInit {
         });
 
         dialogRef.componentInstance.onUpdateUser.subscribe((updatedUser: any) => {
-          
           const index = this.users.findIndex(u => u.id === updatedUser.userId);
           if (index !== -1) {
             this.users[index] = { ...this.users[index], ...updatedUser.userData };
@@ -79,5 +82,16 @@ export class UserAccountComponent implements OnInit {
         console.error('Error fetching user details', error);
       }
     );
+  }
+
+
+  private subscribeToReloadUserData(): void {
+    this.authService.reloadUserData$.subscribe((reload) => {
+      if (reload) {
+        this.fetchUserDetails();
+        this.getUserInfo();
+        this.authService.setReloadUserData(false);
+      }
+    });
   }
 }
