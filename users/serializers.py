@@ -34,7 +34,9 @@ class UserSerializer(serializers.ModelSerializer):
             name=validated_data['name'],
             email=validated_data['email'],
             password=validated_data['password'],
-            profile_image=validated_data['profile_image']
+            profile_image=validated_data['profile_image'],
+            role=validated_data['role']
+
         )
         user.is_active = True
         user.save()
@@ -45,5 +47,6 @@ class UserSerializer(serializers.ModelSerializer):
         instance.email = validated_data.get('email', instance.email)
         instance.username = validated_data.get('username', instance.username)
         instance.profile_image = validated_data.get('profile_image', instance.profile_image)
+        instance.role = validated_data.get('role', instance.role)
         instance.save()
         return instance

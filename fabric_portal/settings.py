@@ -44,13 +44,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'fabric_portal_app.apps.FabricPortalAppConfig',
-    'users.apps.UsersConfig',
-    'projects.apps.ProjectsConfig',
+    'fabric_portal_app.apps.FabricPortalAppConfig',# new
+    'users.apps.UsersConfig',# new
+    'projects.apps.ProjectsConfig',# new
     'rest_framework',# new
     'corsheaders',  # new
     'rest_framework.authtoken',# new
-    'django_extensions'# new
+    'django_extensions',# new
+    'candidate.apps.CandidateConfig'# new
 ]
 
 MIDDLEWARE = [

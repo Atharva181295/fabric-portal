@@ -4,10 +4,13 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
+from rest_framework import permissions
+from django.contrib.auth.models import PermissionsMixin
+import uuid
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, username,email, name, profile_image, password=None):
+    def create_user(self, username,email, name, profile_image,role, password=None):
         """
         Creates and saves a User with the given email, name and password.
         """
@@ -17,20 +20,23 @@ class UserManager(BaseUserManager):
             raise ValueError("Users must have an email ")
         elif not name:
             raise ValueError("Users must have an name ")
+        elif not role:
+            raise ValueError("Users must have an role ")
         # elif not profile_image:
         #     raise ValueError("Users must have an profile_image ")
         user = self.model(
             username=self.normalize_email(username),
             name=name,
             email=email,
-            profile_image=profile_image
+            profile_image=profile_image,
+            role=role
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email,username, name, profile_image, password=None):
+    def create_superuser(self, email,username, name, profile_image,role, password=None):
         """
         Creates and saves a superuser with the given email, name and password.
         """
@@ -39,7 +45,8 @@ class UserManager(BaseUserManager):
             password=password,
             name=name,
             email=email,
-            profile_image=profile_image
+            profile_image=profile_image,
+            role=role
         )
         user.is_admin = True
         user.save(using=self._db)
@@ -47,6 +54,12 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
+    # NEW FOR THE ROLES
+    class Role(models.TextChoices):
+        ADMIN = "ADMIN", "ADMIN"
+        CP = "CP", "CP"
+        Invigilator = "Invigilator", "Invigilator"
+
     username = models.CharField(
         verbose_name="UserName",
         max_length=32,
@@ -56,14 +69,17 @@ class User(AbstractBaseUser):
     email = models.EmailField(max_length=255,unique=True)
     profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=True)
+    role = models.CharField(
+        max_length=20, choices=Role.choices, default=Role.ADMIN, blank=True, null=True
+    )
+    # is_admin = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     objects = UserManager()
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ["name", "email", "profile_image"]
+    REQUIRED_FIELDS = ["name", "email", "profile_image", "role"]
 
     # @receiver(post_save, sender=settings.AUTH_USER_MODEL)
     # def create_auth_token(sender, instance=None, created=False, **kwargs):
@@ -91,7 +107,8 @@ class User(AbstractBaseUser):
     def is_staff(self):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
-        return self.is_admin
+        return self.role
 
     class Meta:
         db_table = "users"
+

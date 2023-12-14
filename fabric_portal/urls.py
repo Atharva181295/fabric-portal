@@ -29,6 +29,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('users.urls')),
     path('api/projects/', include('projects.urls')),
+    path('api/candidate/', include('candidate.urls')),
     # path('', index_view, name='index'),
     path('', views.index, name='index')] + static(settings.STATIC_URL,document_root=settings.STATICFILES_DIRS)
 
