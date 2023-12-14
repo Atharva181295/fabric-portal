@@ -15,9 +15,16 @@ import { MatMenuModule } from '@angular/material/menu';
 @Component({
   selector: 'app-user-account',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatDividerModule, MatIconModule, MatButtonModule, MatMenuModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatDividerModule,
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+  ],
   templateUrl: './user-account.component.html',
-  styleUrls: ['./user-account.component.scss']
+  styleUrls: ['./user-account.component.scss'],
 })
 export class UserAccountComponent implements OnInit {
   userDetails: any;
@@ -29,8 +36,8 @@ export class UserAccountComponent implements OnInit {
     private authService: AuthService,
     private dialog: MatDialog,
     private router: Router,
-    private userService: UsersService,
-  ) {}
+    private userService: UsersService
+  ) { }
 
   ngOnInit(): void {
     this.fetchUserDetails();
@@ -39,7 +46,7 @@ export class UserAccountComponent implements OnInit {
   }
 
   fetchUserDetails(): void {
-    this.authService.whoami().then(userDetails => {
+    this.authService.whoami().then((userDetails) => {
       this.userDetails = userDetails;
     });
   }
@@ -63,18 +70,25 @@ export class UserAccountComponent implements OnInit {
       (userDetails) => {
         const dialogRef = this.dialog.open(EditUserDialogComponent, {
           width: '350px',
-          data: { user: userDetails, userId: user.id }
+          data: { user: userDetails, userId: user.id },
         });
 
-        dialogRef.componentInstance.onUpdateUser.subscribe((updatedUser: any) => {
-          const index = this.users.findIndex(u => u.id === updatedUser.userId);
-          if (index !== -1) {
-            this.users[index] = { ...this.users[index], ...updatedUser.userData };
-            this.dataSource.data = this.users;
+        dialogRef.componentInstance.onUpdateUser.subscribe(
+          (updatedUser: any) => {
+            const index = this.users.findIndex(
+              (u) => u.id === updatedUser.userId
+            );
+            if (index !== -1) {
+              this.users[index] = {
+                ...this.users[index],
+                ...updatedUser.userData,
+              };
+              this.dataSource.data = this.users;
+            }
           }
-        });
+        );
 
-        dialogRef.afterClosed().subscribe(result => {
+        dialogRef.afterClosed().subscribe((result) => {
           console.log('The dialog was closed with result:', result);
         });
       },
@@ -83,7 +97,6 @@ export class UserAccountComponent implements OnInit {
       }
     );
   }
-
 
   private subscribeToReloadUserData(): void {
     this.authService.reloadUserData$.subscribe((reload) => {

@@ -13,7 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class LoginComponent {
   loading = false;
   hidePassword = true;
-  
+
   signInForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
@@ -24,7 +24,7 @@ export class LoginComponent {
     private authService: AuthService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   canSubmit(): boolean {
     return this.signInForm.valid;
@@ -51,11 +51,11 @@ export class LoginComponent {
         this.showSnackBar('User credentials are incorrect');
         console.error('Login failed');
       }
-    } finally {}
+    } finally { }
   }
 
   togglePasswordVisibility(event: Event): void {
-    event.preventDefault(); // Prevent any default behavior
+    event.preventDefault();
     this.hidePassword = !this.hidePassword;
   }
 

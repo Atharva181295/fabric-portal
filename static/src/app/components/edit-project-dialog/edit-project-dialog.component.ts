@@ -16,11 +16,11 @@ export class EditProjectDialogComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private projectService: ProjectsService, 
-    private snackBar: MatSnackBar, 
+    private projectService: ProjectsService,
+    private snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<EditProjectDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const projectData = this.data.project.data.project;
@@ -45,7 +45,7 @@ export class EditProjectDialogComponent implements OnInit {
       this.projectService.updateProject(projectId, projectData).subscribe(
         (response) => {
           console.log('Project updated successfully', response);
-         
+
           this.snackBar.open('Project updated successfully', 'Close', {
             duration: 3000,
             verticalPosition: 'top',
@@ -56,11 +56,11 @@ export class EditProjectDialogComponent implements OnInit {
         },
         (error) => {
           console.error('Error updating project', error);
-         
+
           this.snackBar.open('Error updating project', 'Close', {
             duration: 3000,
-            verticalPosition: 'top', 
-            panelClass: ['error-snackbar'], 
+            verticalPosition: 'top',
+            panelClass: ['error-snackbar'],
           });
         }
       );
@@ -71,7 +71,6 @@ export class EditProjectDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  // Format date using Angular's DatePipe
   private formatDate(date: string): string {
     const datePipe = new DatePipe('en-US');
     return datePipe.transform(new Date(date), 'yyyy-MM-dd') || '';

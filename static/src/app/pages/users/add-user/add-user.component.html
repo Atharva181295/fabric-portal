@@ -11,92 +11,70 @@
       <mat-divider></mat-divider>
       <br>
       <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-        <!-- Username -->
         <mat-form-field appearance="fill">
           <mat-label>Username</mat-label>
           <input matInput formControlName="username" required />
-          <mat-error
-            *ngIf="
+          <mat-error *ngIf="
               userForm.get('username')?.hasError('required') &&
               userForm.get('username')?.touched
-            "
-          >
+            ">
             Username is required
           </mat-error>
         </mat-form-field>
 
-        <!-- Password -->
         <mat-form-field appearance="fill">
           <mat-label>Password</mat-label>
           <input matInput type="password" formControlName="password" required />
-          <mat-error
-            *ngIf="
+          <mat-error *ngIf="
               userForm.get('password')?.hasError('required') &&
               userForm.get('password')?.touched
-            "
-          >
+            ">
             Password is required
           </mat-error>
         </mat-form-field>
 
-        <!-- Confirm Password -->
         <mat-form-field appearance="fill">
           <mat-label>Confirm Password</mat-label>
-          <input
-            matInput
-            type="password"
-            formControlName="confirm_password"
-            required
-          />
-          <mat-error
-            *ngIf="
+          <input matInput type="password" formControlName="confirm_password" required />
+          <mat-error *ngIf="
               userForm.get('confirm_password')?.touched &&
               userForm.hasError('passwordMismatch')
-            "
-          >
+            ">
             Passwords do not match
           </mat-error>
         </mat-form-field>
 
-        <!-- Name -->
         <mat-form-field appearance="fill">
           <mat-label>Name</mat-label>
           <input matInput formControlName="name" required />
-          <mat-error
-            *ngIf="
+          <mat-error *ngIf="
               userForm.get('name')?.hasError('required') &&
               userForm.get('name')?.touched
-            "
-          >
+            ">
             Name is required
           </mat-error>
         </mat-form-field>
 
-        <!-- Email -->
         <mat-form-field appearance="fill">
           <mat-label>Email</mat-label>
           <input matInput formControlName="email" required email />
-          <mat-error
-            *ngIf="
+          <mat-error *ngIf="
               userForm.get('email')?.hasError('required') &&
               userForm.get('email')?.touched
-            "
-          >
+            ">
             Email is required
           </mat-error>
-          <mat-error
-            *ngIf="
+          <mat-error *ngIf="
               userForm.get('email')?.hasError('email') &&
               userForm.get('email')?.touched
-            "
-          >
+            ">
             Please enter a valid email address.
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
           <mat-label>Role</mat-label>
-          <mat-select  required>
+          <mat-select required>
             <mat-option value="admin">Admin</mat-option>
             <mat-option value="cp">CP</mat-option>
             <mat-option value="invigilator">Invigilator</mat-option>
@@ -110,14 +88,13 @@
             Role is required
           </mat-error> -->
         </mat-form-field>
-        
+
 
         <mat-form-field appearance="fill">
           <mat-label>Profile Image</mat-label> <br>
           <input matInput type="file" (change)="onFileSelected($event)" />
         </mat-form-field>
 
-        <!-- Submit Button -->
         <div class="button-container">
           <button mat-flat-button type="submit" color="primary">
             Add User

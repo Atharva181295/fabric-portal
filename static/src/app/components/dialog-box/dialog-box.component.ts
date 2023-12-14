@@ -20,8 +20,8 @@ export class DialogBoxComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogBoxComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private snackBar: MatSnackBar // Inject MatSnackBar
-  ) {}
+    private snackBar: MatSnackBar
+  ) { }
 
   onNoClick(): void {
     this.dialogRef.close('cancel');

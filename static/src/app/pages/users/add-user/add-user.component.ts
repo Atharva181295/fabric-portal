@@ -12,7 +12,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 export class AddUserComponent implements OnInit {
   userForm!: FormGroup;
   userId: number | null;
-  selectedFile: File | null = null; // Variable to store the selected file
+  selectedFile: File | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -31,7 +31,6 @@ export class AddUserComponent implements OnInit {
       confirm_password: ['', [Validators.required]],
       name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      // Profile Image
       profile_image: [null]
     }, {
       validator: this.passwordMatchValidator
@@ -48,7 +47,7 @@ export class AddUserComponent implements OnInit {
               confirm_password: '',
               name: userDetails.name,
               email: userDetails.email,
-              profile_image: null // Assuming user details do not include the profile image URL
+              profile_image: null
             });
           },
           (error) => {
@@ -68,16 +67,14 @@ export class AddUserComponent implements OnInit {
       const formData = new FormData();
       const userData = this.userForm.value;
 
-      // Append form data
       Object.keys(userData).forEach(key => {
         formData.append(key, userData[key]);
       });
 
-      // Append profile image
       if (this.selectedFile) {
         formData.append('profile_image', this.selectedFile as Blob, (this.selectedFile as File).name);
       } else {
-        formData.append('profile_image', ''); // or you can append a default value if needed
+        formData.append('profile_image', '');
       }
 
       if (this.userId) {
@@ -124,15 +121,14 @@ export class AddUserComponent implements OnInit {
     this.snackBar.open(message, 'Close', config);
   }
 
-  // Custom validator for password matching
   private passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
     const password = control.get('password');
     const confirm_password = control.get('confirm_password');
 
     if (!password || !confirm_password || password.value === confirm_password.value) {
-      return null; // Passwords match
+      return null;
     } else {
-      return { 'passwordMismatch': true }; // Passwords don't match
+      return { 'passwordMismatch': true };
     }
   }
 }

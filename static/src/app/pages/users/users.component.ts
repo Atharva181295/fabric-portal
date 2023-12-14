@@ -23,7 +23,7 @@ export class UsersComponent implements AfterViewInit {
     private userService: UsersService,
     private dialog: MatDialog,
     private router: Router
-  ) {}
+  ) { }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -60,7 +60,7 @@ export class UsersComponent implements AfterViewInit {
         });
 
         dialogRef.componentInstance.onUpdateUser.subscribe((updatedUser: any) => {
-          
+
           const index = this.users.findIndex(u => u.id === updatedUser.userId);
           if (index !== -1) {
             this.users[index] = { ...this.users[index], ...updatedUser.userData };
@@ -79,7 +79,7 @@ export class UsersComponent implements AfterViewInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/dashboard']); 
+    this.router.navigate(['/dashboard']);
   }
 
   deleteUser(user: any): void {

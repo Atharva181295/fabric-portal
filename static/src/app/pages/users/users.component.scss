@@ -26,13 +26,12 @@
   
   .flex {
     display: flex;
-    justify-content: space-between; /* Align items to the right end */
-    align-items: center; /* Center items vertically */
+    justify-content: space-between;
+    align-items: center;
   }
   
-  /* Additional styles for button */
   .primary-button {
-    margin-left: auto; /* Automatically pushes the button to the right */
+    margin-left: auto;
   }
 
   .edit-btn{

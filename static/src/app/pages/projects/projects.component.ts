@@ -23,7 +23,7 @@ export class ProjectsComponent implements AfterViewInit {
     private projectsService: ProjectsService,
     private dialog: MatDialog,
     private router: Router
-  ) {}
+  ) { }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -54,7 +54,7 @@ export class ProjectsComponent implements AfterViewInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/dashboard']); 
+    this.router.navigate(['/dashboard']);
   }
 
   editProject(project: any): void {

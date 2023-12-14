@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { ProjectsService } from './../projects.service'; 
+import { ProjectsService } from './../projects.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
@@ -18,7 +18,7 @@ export class AddProjectComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private projectService: ProjectsService, 
+    private projectService: ProjectsService,
     private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
@@ -30,7 +30,7 @@ export class AddProjectComponent implements OnInit {
   ngOnInit(): void {
     this.initializeProjectForm();
     this.getUserInfo();
-  
+
     this.route.params.subscribe(params => {
       this.projectId = params['id'];
       if (this.projectId) {
@@ -53,7 +53,7 @@ export class AddProjectComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/projects']); 
+    this.router.navigate(['/projects']);
   }
 
   onSubmit(): void {
@@ -96,13 +96,11 @@ export class AddProjectComponent implements OnInit {
       const userInfo = await this.authService.getUserInfo();
       this.userInfo = userInfo.id;
       console.log('User Info:', this.userInfo);
-  
-      // Check if projectForm is not initialized
+
       if (!this.projectForm) {
         this.initializeProjectForm();
       }
-  
-      // Update the user property in the projectForm after getting the user information
+
       this.projectForm.patchValue({
         user: this.userInfo,
       });
@@ -110,7 +108,7 @@ export class AddProjectComponent implements OnInit {
       console.error('Error getting user info:', error);
     }
   }
-  
+
   private initializeProjectForm(): void {
     this.projectForm = this.fb.group({
       name: ['', [Validators.required]],
@@ -138,13 +136,12 @@ export class AddProjectComponent implements OnInit {
     const endDate = control.get('end_date');
 
     if (!startDate || !endDate || new Date(startDate.value) <= new Date(endDate.value)) {
-      return null; 
+      return null;
     } else {
       return { 'invalidDateRange': true };
     }
   }
 
-  // Format date using Angular's DatePipe
   private formatDate(date: string): string {
     const datePipe = new DatePipe('en-US');
     return datePipe.transform(new Date(date), 'yyyy-MM-dd') || '';

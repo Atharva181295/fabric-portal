@@ -12,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class SetPasswordComponent {
   changePasswordForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService,  private router: Router,private snackBar: MatSnackBar) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private snackBar: MatSnackBar) {
     this.changePasswordForm = this.fb.group({
       oldPassword: ['', Validators.required],
       newPassword: ['', [Validators.required, Validators.minLength(4)]],
@@ -20,7 +20,7 @@ export class SetPasswordComponent {
   }
 
   goBack(): void {
-    this.router.navigate(['/dashboard']); 
+    this.router.navigate(['/dashboard']);
   }
 
   gotoPage(pageName: string): void {
@@ -51,7 +51,7 @@ export class SetPasswordComponent {
             verticalPosition: 'top',
             horizontalPosition: 'center',
           });
-          
+
           this.gotoPage('login');
           console.log('Password changed successfully');
         } else {
@@ -64,5 +64,5 @@ export class SetPasswordComponent {
       this.changePasswordForm.markAllAsTouched();
     }
   }
-  
+
 }

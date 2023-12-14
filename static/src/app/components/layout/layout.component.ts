@@ -8,15 +8,15 @@ import { AuthService } from './../../auth/auth.service';
   styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent implements OnInit {
-  username: string= ''
+  username: string = ''
   userInfo: any;
   profilePhoto: any;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.getUserInfo();
-  } 
+  }
 
   async logout(): Promise<void> {
     const logoutSuccess = await this.authService.logout();
@@ -30,7 +30,7 @@ export class LayoutComponent implements OnInit {
   async getUserInfo() {
     try {
       const userInfo = await this.authService.getUserInfo();
-      this.userInfo =userInfo.username;
+      this.userInfo = userInfo.username;
       this.profilePhoto = userInfo.profile_image;
       console.log('User Info:', this.profilePhoto);
     } catch (error) {

@@ -8,7 +8,7 @@
 <div class="centered-card">
   <mat-card>
     <mat-card-header>
-     
+
       <mat-card-title class="mat-card-title-centered">User Account Details</mat-card-title>
     </mat-card-header>
 
@@ -17,21 +17,17 @@
     <mat-card-content *ngIf="userInfo" class="mat-card-content-centered">
       <div class="profile-section">
         <img *ngIf="userInfo.profile_image" [src]="userInfo.profile_image" alt="Profile Image" class="profile-image">
-        <!-- <button mat-icon-button class="edit-icon-button" (click)="openImageUploadDialog()">
-          <mat-icon>edit</mat-icon>
-        </button> -->
       </div>
 
       <ul>
-        <!-- <li>ID: {{ userInfo.id }}</li>
-        <li>Last Login: {{ userInfo.last_login }}</li> -->
         <li>Username: {{ userInfo.username }}</li>
         <li>Name: {{ userInfo.name }}</li>
         <li>Email: {{ userInfo.email }}</li>
       </ul>
 
       <mat-divider></mat-divider> <br>
-      <button mat-raised-button color="primary" (click)="editUser(userInfo)" class="mat-button-centered">Edit User Profile</button>      
+      <button mat-raised-button color="primary" (click)="editUser(userInfo)" class="mat-button-centered">Edit User
+        Profile</button>
     </mat-card-content>
   </mat-card>
 </div>

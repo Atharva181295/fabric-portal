@@ -1,16 +1,16 @@
 <h2 mat-dialog-title>Edit User</h2>
 <mat-dialog-content>
   <form [formGroup]="editForm" enctype="multipart/form-data">
-    
+
     <mat-form-field appearance="fill">
       <mat-label>Username</mat-label>
-      <input matInput formControlName="username" >
+      <input matInput formControlName="username">
     </mat-form-field>
     <br>
 
     <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>
-      <input matInput formControlName="email"  email>
+      <input matInput formControlName="email" email>
       <mat-error *ngIf="editForm.get('email')?.hasError('email')">
         Please enter a valid email address.
       </mat-error>
@@ -19,7 +19,7 @@
 
     <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
-      <input matInput formControlName="name" >
+      <input matInput formControlName="name">
     </mat-form-field>
     <br>
 
@@ -33,7 +33,7 @@
         <pre></pre>
       </div>
     </mat-form-field>
-    
+
   </form>
 </mat-dialog-content>
 

@@ -9,7 +9,7 @@ export class AuthService {
   private baseUrl = 'http://localhost:8000/';
   private loginUrl = 'api/login/';
   private logoutUrl = 'api/logout/';
-  private checAuth = 'api/checkauth/';
+  private checkAuth = 'api/checkauth/';
   private userInfoUrl = 'api/whoami/';
   private changePasswordUrl = 'api/change_password/';
   private userUpdateUrl = 'api/user_update/';
@@ -41,7 +41,7 @@ export class AuthService {
     try {
       this.isAuthenticatedFlag = false;
 
-     await this.http.post<any>(this.getUrl(this.logoutUrl), {}).toPromise();
+      await this.http.post<any>(this.getUrl(this.logoutUrl), {}).toPromise();
 
       return true;
     } catch (error) {
@@ -55,7 +55,7 @@ export class AuthService {
   }
 
   async whoami(): Promise<any> {
-    return await this.http.get<any>(`${this.baseUrl}${this.checAuth}`)
+    return await this.http.get<any>(`${this.baseUrl}${this.checkAuth}`)
       .toPromise()
       .then(response => {
         console.log(response)
@@ -94,19 +94,15 @@ export class AuthService {
     try {
       const formData = new FormData();
       formData.append('profileImage', file);
-  
+
       await this.http.put<any>(this.getUrl(this.userUpdateUrl), formData).toPromise();
-  
-      // Assuming your API call was successful, you may want to trigger a reload of user data.
       this.setReloadUserData(true);
-  
       return true;
     } catch (error) {
       console.error('Error updating user profile:', error);
       return false;
     }
   }
-  
 
   private getUrl(endpoint: string): string {
     return this.baseUrl + endpoint;
@@ -126,5 +122,5 @@ export class AuthService {
   private removeCookie(name: string): void {
     document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
   }
-  
+
 }
